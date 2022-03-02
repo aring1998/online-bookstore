@@ -18,7 +18,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "pm": "pm2 start dist/main.js --name online-bookstore",
+    "pms": "pm2 stop online-bookstore",
+    "pmr": "pm2 restart online-bookstore",
+    "pmd": "pm2 delete online-bookstore"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -51,6 +55,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.2.5",
+    "pm2": "^5.1.2",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
