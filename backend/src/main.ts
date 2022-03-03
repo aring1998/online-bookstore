@@ -5,9 +5,10 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  app.setGlobalPrefix('/api')
   const swaggerOptions = new DocumentBuilder()
     .setTitle('OnlineBookstore api documnet')
-    .setDescription('网上图书商城的api文档')
+    .setDescription('网上图书商城的接口文档，接口地址: http://81.68.189.158:3088/api/')
     .setVersion('1.0')
     .addBasicAuth()
     .build()

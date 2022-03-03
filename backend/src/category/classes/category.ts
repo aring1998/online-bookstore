@@ -4,14 +4,14 @@ import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto';
 
 export class CategoryDTO {
   @ApiProperty({ example: 1, description: 'id' })
-  id: number
+  id?: number
 
-  @ApiProperty({ example: '玩具', description: '分类名称' })
-  name: string
+  @ApiProperty({ example: '名著', description: '分类名称' })
+  name?: string
 
   @ApiProperty({ enum: [0, 1], description: '失效标识' })
   @IsEnum({ Common: 0, Deleted: 1 })
-  delFlag: number
+  delFlag?: number
 }
 
 export class CategoryResDTO extends BaseResDTO {
@@ -19,26 +19,26 @@ export class CategoryResDTO extends BaseResDTO {
   data?: CategoryDTO
 }
 
-class PageData {
+class CategoryPageData {
   @ApiProperty({ type: [CategoryDTO] })
   data: CategoryDTO[]
-  @ApiProperty({ example: 10, description: '分页总数' })
+  @ApiProperty({ example: 1, description: '数据总数' })
   count: number
 }
 
 export class CategoryPageResDTO extends BaseResDTO {
-  @ApiProperty({ type: PageData, description: '分页数据' })
-  data: PageData
+  @ApiProperty({ type: CategoryPageData, description: '分页数据' })
+  data?: CategoryPageData
 }
 
 export class CategoryAddDTO {
-  @ApiProperty({ example: '玩具', description: '分类名' })
+  @ApiProperty({ example: '名著', description: '分类名' })
   @IsNotEmpty({ message: '分类名不能为空' })
   name: string
 }
 
 export class CategoryListDTO extends BasePageDTO {
-  @ApiProperty({ example: '玩具', description: '分类名', required: false })
+  @ApiProperty({ example: '名著', description: '分类名', required: false })
   name: string
 }
 

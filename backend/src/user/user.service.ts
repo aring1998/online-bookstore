@@ -34,4 +34,9 @@ export class UserService {
   async updateToken(option: any): Promise<any> {
     return await this.userRepository.update(option, { token: uuidv4() })
   }
+
+  async vaildAuth(option: { token: string }): Promise<any> {
+    const data = await this.userRepository.findOne({ ...option })
+    return data?.auth
+  }
 }

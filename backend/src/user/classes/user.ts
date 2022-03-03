@@ -10,7 +10,7 @@ export class UserDTO {
   @IsOptional()
   username: string
 
-  @ApiProperty({ example: '123456', description: '令牌' })
+  @ApiProperty({ example: 'afa3b86e-dce0-4dbd-ad05-4422db248764', description: '令牌' })
   token: string
 
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱' })

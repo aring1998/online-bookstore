@@ -4,8 +4,10 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './entities/user.entity'
 import { Category } from './entities/category.entity'
+import { Commodity } from './entities/commodity.entity'
 import { UserModule } from './user/user.module'
 import { CategoryModule } from './category/category.module'
+import { CommodityModule } from './commodity/commodity.module'
 
 const dotenv = require('dotenv')
 dotenv.config('./env')
@@ -18,11 +20,12 @@ dotenv.config('./env')
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Category],
+      entities: [User, Category, Commodity],
       synchronize: true
     }),
     UserModule,
-    CategoryModule
+    CategoryModule,
+    CommodityModule
   ],
   controllers: [AppController],
   providers: [AppService]

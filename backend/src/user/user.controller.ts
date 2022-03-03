@@ -1,8 +1,8 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Post, ValidationPipe, Head, Header, Headers } from '@nestjs/common'
 import { UserService } from './user.service'
 import { suc, fail } from '../utils/response'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
-import { UserDTO, UserResDTO, UserRegisterDTO, UserLoginDTO } from './classes/user'
+import { UserResDTO, UserRegisterDTO, UserLoginDTO } from './classes/user'
 
 @ApiTags('用户')
 @Controller('user')
@@ -24,7 +24,7 @@ export class UserController {
       email
     })
     const { ...data } = res
-    return suc<UserDTO>(data, '注册成功')
+    return suc(data, '注册成功')
   }
 
   @Post('login')
@@ -37,6 +37,15 @@ export class UserController {
     if (!userInfo) return fail('用户名不存在')
     if (userInfo.password !== password) return fail('密码错误')
     await this.userSrvice.updateToken({ id: userInfo.id })
-    return suc<UserDTO>(userInfo, '登录成功')
+    return suc(userInfo, '登录成功')
+  }
+
+  @Post('token')
+  @ApiOperation({ summary: '验证token' })
+  @ApiResponse({ status: 0, type: UserResDTO })
+  async token(@Headers('token') token: string ): Promise<UserResDTO> {
+    const data = await this.userSrvice.findOne({ token })
+    if (!data) return fail('token已过期，请重新登录')
+    return suc(data, `欢迎回来，${data.username}`)
   }
 }
