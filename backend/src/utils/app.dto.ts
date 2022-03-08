@@ -1,0 +1,19 @@
+import { IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto';
+
+class UploadDTO {
+  @ApiProperty({ example: '1646726623796-图片名.png', description: '文件名' })
+  fileName: string
+
+  @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '文件地址' })
+  fileUrl: string
+
+  @ApiProperty({ example: 1200, description: '文件大小' })
+  fileSize: number
+}
+
+export class UploadResDTO extends BaseResDTO {
+  @ApiProperty({ type: UploadDTO, description: '文件信息' })
+  data?: UploadDTO
+}
