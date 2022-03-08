@@ -8,6 +8,7 @@ class BaseDTO {
   name?: string
 
   @ApiProperty({ example: 1, description: '分类id' })
+  @IsNotEmpty({ message: '分类不能为空' })
   categoryId?: number
 
   @ApiProperty({ example: 22.02, description: '价格' })
@@ -41,6 +42,9 @@ export class CommodityDTO extends BaseDTO {
   @ApiProperty({ enum: [0, 1], description: '失效标识', required: false })
   @IsEnum({ Common: 0, Deleted: 1 })
   delFlag?: number
+  
+  @ApiProperty({ example: '名著', description: '分类名', required: false })
+  categoryName?: string
 }
 
 export class CommodityResDTO extends BaseResDTO {

@@ -25,7 +25,7 @@ export class CategoryService {
 
   async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: CategoryDTO[], count: number }> {
     const { page = 1, pageSize = 200, ...where } = option
-    const res = await this.CategoryRepository.createQueryBuilder('Commodity')
+    const res = await this.CategoryRepository.createQueryBuilder('category')
       .where({ ...where })
       .skip((page - 1) * pageSize)
       .take(page * pageSize)

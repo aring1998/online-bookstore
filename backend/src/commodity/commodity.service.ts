@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Commodity } from 'src/entities/commodity.entity'
 import { CommodityDTO } from './classes/commodity'
+import { Category } from 'src/entities/category.entity'
 
 @Injectable()
 export class CommodityService {
@@ -25,14 +26,21 @@ export class CommodityService {
 
   async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: CommodityDTO[], count: number }> {
     const { page = 1, pageSize = 200, ...where } = option
-    const res = await this.CommodityRepository.createQueryBuilder('Commodity')
+    const data = await this.CommodityRepository.createQueryBuilder('commodity')
+      // .leftJoinAndMapOne('commodity.category',Category, 'category', 'category.id = commodity.categoryId')
+      .leftJoin(Category, 'category', 'category.id = commodity.categoryId')
+      .select(`
+        commodity.*,
+        category.name AS categoryName
+      `)
       .where({ ...where })
       .skip((page - 1) * pageSize)
       .take(page * pageSize)
-      .getManyAndCount()
+      .getRawMany()
+    const count = await this.CommodityRepository.createQueryBuilder('commodity').getCount()
     return {
-      data: res[0],
-      count: res[1]
+      data,
+      count
     }
   }
 }
