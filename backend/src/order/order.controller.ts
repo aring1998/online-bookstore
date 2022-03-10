@@ -3,19 +3,30 @@ import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { OrderService } from './order.service'
 import { UserService } from 'src/user/user.service'
-import { vaildParams } from 'src/utils'
 import { OrderResDTO, OrderPageResDTO, OrderAddDTO, OrderListDTO, OrderUpdateDTO } from './classes/order'
 import * as moment from 'moment'
-interface PageParams {
-  page: number
-  pageSize: number
-  [propName: string]: any
-}
+import { BasePageDTO } from 'src/utils/base.dto'
 
 @ApiTags('订单')
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService, private readonly userService: UserService) {}
+
+  @Get('mine')
+  @ApiOperation({ summary: '我的订单' })
+  @ApiResponse({ status: 0, type: OrderPageResDTO })
+  async mine(@Headers('token') token: string, @Param(ValidationPipe) params: BasePageDTO): Promise<OrderPageResDTO> {
+    const userInfo = await this.userService.findOne({ token })
+    if (!userInfo) return fail('请先登录')
+    const { page, pageSize } = params
+    const data = await this.orderService.findByPage({
+      userId: userInfo.id,
+      page,
+      pageSize,
+      delFlag: 0
+    })
+    return suc(data, '')
+  }
 
   @Post('add')
   @ApiOperation({ summary: '下单' })
