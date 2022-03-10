@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator'
+import { IsNotEmpty, IsEnum, IsDateString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto'
 
@@ -77,9 +77,11 @@ export class CommodityListDTO extends BasePageDTO {
   author: string
 
   @ApiProperty({ example: '1970-01-01', description: '出版日期开始时间', required: false })
+  @IsDateString()
   publicationTimeStart: string
 
   @ApiProperty({ example: '2022-12-31', description: '出版日期结束时间', required: false })
+  @IsDateString()
   publicationTimeEnd: string
 }
 

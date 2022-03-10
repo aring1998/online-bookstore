@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Get, Query, Param, Headers } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Param, Headers } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CommodityService } from './commodity.service'
@@ -29,8 +29,7 @@ export class CommodityController {
   @Post('list')
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
-  async list(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityListDTO): Promise<CommodityPageResDTO> {
-    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
+  async list(@Body(ValidationPipe) body: CommodityListDTO): Promise<CommodityPageResDTO> {
     const { name, categoryId, author, page, pageSize, publicationTimeStart, publicationTimeEnd } = body
     const data = await this.commodityService.findByPage({
       name,
