@@ -1,0 +1,61 @@
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Order } from 'src/entities/order.entity'
+import { OrderDTO, OrderPageDTO } from './classes/order'
+import { vaildParams } from 'src/utils'
+import { Category } from 'src/entities/category.entity'
+import { User } from 'src/entities/user.entity'
+import { Commodity } from 'src/entities/commodity.entity'
+
+@Injectable()
+export class OrderService {
+  constructor(
+    @InjectRepository(Order)
+    private readonly OrderRepository: Repository<OrderDTO>
+  ) {}
+
+  async save(data: Partial<OrderDTO>): Promise<OrderDTO> {
+    return await this.OrderRepository.save(data)
+  }
+
+  async find(option?: OrderDTO): Promise<OrderDTO[]> {
+    return await this.OrderRepository.find(option)
+  }
+
+  async findOne(option?: OrderDTO): Promise<OrderDTO> {
+    return await this.OrderRepository.findOne(option)
+  }
+  
+  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: OrderPageDTO[]; count: number }> {
+    const { page = 1, pageSize = 200, orderTimeStart, orderTimeEnd, ...where } = option
+    let sql = this.OrderRepository.createQueryBuilder('order')
+      .leftJoin(Category, 'category', 'order.categoryId = category.id')
+      .leftJoin(User, 'user', 'order.userId = user.id')
+      .leftJoin(Commodity, 'commodity', 'order.commodityId = commodity.id')
+      .where({ ...vaildParams(where) })
+    if (orderTimeStart && orderTimeEnd) {
+      sql = sql.andWhere('publicationTime BETWEEN :start AND :end', {
+        start: orderTimeStart,
+        end: orderTimeEnd
+      })
+    }
+    const data = await sql
+      .select(
+        `
+        \`order\`.*,
+        category.name AS categoryName,
+        user.username AS username,
+        commodity.name AS commodityName
+      `
+      )
+      .skip((page - 1) * pageSize)
+      .take(page * pageSize)
+      .getRawMany()
+    const count = await sql.getCount()
+    return {
+      data,
+      count
+    }
+  }
+}
