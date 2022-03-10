@@ -3,13 +3,7 @@ import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CategoryService } from './category.service'
 import { UserService } from 'src/user/user.service'
-import { vaildParams } from 'src/utils'
 import { CategoryResDTO, CategoryPageResDTO, CategoryAddDTO, CategoryListDTO, CategoryUpdateDTO } from './classes/category'
-interface PageParams {
-  page: number
-  pageSize: number
-  [propName: string]: any
-}
 
 @ApiTags('分类')
 @Controller('category')
@@ -32,9 +26,11 @@ export class CategoryController {
   @ApiResponse({ status: 0, type: CategoryPageResDTO })
   async list(@Headers('token') token: string, @Body(ValidationPipe) body: CategoryListDTO): Promise<CategoryPageResDTO> {
     if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
-    const params = vaildParams(body)
+    const { name, page, pageSize } = body
     const data = await this.categoryService.findByPage({
-      ...(params as PageParams),
+      name,
+      page,
+      pageSize,
       delFlag: 0
     })
     return suc(data, '')

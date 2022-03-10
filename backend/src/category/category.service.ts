@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Category } from 'src/entities/category.entity'
 import { CategoryDTO } from './classes/category'
+import { vaildParams } from 'src/utils'
 
 @Injectable()
 export class CategoryService {
@@ -26,7 +27,7 @@ export class CategoryService {
   async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: CategoryDTO[], count: number }> {
     const { page = 1, pageSize = 200, ...where } = option
     const res = await this.CategoryRepository.createQueryBuilder('category')
-      .where({ ...where })
+      .where({ ... vaildParams(where) })
       .skip((page - 1) * pageSize)
       .take(page * pageSize)
       .getManyAndCount()

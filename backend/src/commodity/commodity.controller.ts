@@ -20,7 +20,7 @@ export class CommodityController {
   @ApiOperation({ summary: '新增商品' })
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityAddDTO): Promise<CommodityResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { name, price, author, categoryId } = body
     const data = await this.commodityService.save({ name, price, author, categoryId })
     return suc(data, '添加商品成功')
@@ -30,10 +30,16 @@ export class CommodityController {
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
   async list(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityListDTO): Promise<CommodityPageResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
-    const params = vaildParams(body)
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
+    const { name, categoryId, author, page, pageSize, publicationTimeStart, publicationTimeEnd } = body
     const data = await this.commodityService.findByPage({
-      ...(params as PageParams),
+      name,
+      categoryId,
+      author,
+      page,
+      pageSize,
+      publicationTimeStart,
+      publicationTimeEnd,
       delFlag: 0
     })
     return suc(data, '')
@@ -43,7 +49,7 @@ export class CommodityController {
   @ApiOperation({ summary: '删除商品' })
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async del(@Headers('token') token: string, @Param('id') id: number): Promise<CommodityResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     if (!id) return fail('id不可为空')
     const res = await this.commodityService.findOne({ id })
     if (!res) return fail('未查询到对应数据')
@@ -56,7 +62,7 @@ export class CommodityController {
   @ApiOperation({ summary: '修改商品' })
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async update(@Headers('token') token: string, @Body() body: CommodityUpdateDTO): Promise<CommodityResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { id } = body
     if (!id) return fail('id不可为空')
     const res = await this.commodityService.findOne({ id })

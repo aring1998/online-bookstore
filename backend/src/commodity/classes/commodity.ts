@@ -75,6 +75,12 @@ export class CommodityListDTO extends BasePageDTO {
 
   @ApiProperty({ example: '丹尼尔·笛福', description: '作者', required: false })
   author: string
+
+  @ApiProperty({ example: '1970-01-01', description: '出版日期开始时间', required: false })
+  publicationTimeStart: string
+
+  @ApiProperty({ example: '2022-12-31', description: '出版日期结束时间', required: false })
+  publicationTimeEnd: string
 }
 
 export class CommodityUpdateDTO extends BaseDTO {
