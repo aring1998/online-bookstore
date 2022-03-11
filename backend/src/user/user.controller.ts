@@ -17,6 +17,9 @@ export class UserController {
 
     const userInfo = await this.userSrvice.findOne({ username })
     if (userInfo) return fail('该用户名已被注册')
+    
+    const emailInfo = await this.userSrvice.findOne({ email })
+    if (emailInfo && email) return fail('该邮箱已被使用')
 
     const res = await this.userSrvice.save({
       username,
