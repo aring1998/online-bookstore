@@ -34,15 +34,12 @@ export class OrderController {
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: OrderAddDTO): Promise<OrderResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { categoryId, commodityId, consignee, tel, receiveAddressCode, receiveDetailAddress } = body
+    const { categoryId, commodityId, receivingId } = body
     const data = await this.orderService.save({
       userId: userInfo.id,
       categoryId,
       commodityId,
-      consignee,
-      tel,
-      receiveAddressCode,
-      receiveDetailAddress,
+      receivingId,
       orderTime: moment().format('YYYY-MM-DD HH:mm:ss')
     })
     return suc(data, '下单成功')
@@ -83,7 +80,7 @@ export class OrderController {
     let message = ''
     if (orderType === 1) message = '发货成功'
     else if (orderType === 2) message = '完成订单成功'
-    else if (orderType === -1) message = '取消成功'
+    else if (orderType === -1) message = '取消订单成功'
     return suc(data, message)
   }
 }

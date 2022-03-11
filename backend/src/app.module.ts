@@ -6,10 +6,12 @@ import { User } from './entities/user.entity'
 import { Category } from './entities/category.entity'
 import { Commodity } from './entities/commodity.entity'
 import { Order } from './entities/order.entity'
+import { Receiving } from './entities/receiving.entity'
 import { UserModule } from './user/user.module'
 import { CategoryModule } from './category/category.module'
 import { CommodityModule } from './commodity/commodity.module'
 import { OrderModule } from './order/order.module'
+import { ReceivingModule } from './receiving/receiving.module'
 
 const dotenv = require('dotenv')
 dotenv.config('./env')
@@ -22,13 +24,14 @@ dotenv.config('./env')
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Category, Commodity, Order],
+      entities: [User, Category, Commodity, Order, Receiving],
       synchronize: true
     }),
     UserModule,
     CategoryModule,
     CommodityModule,
-    OrderModule
+    OrderModule,
+    ReceivingModule
   ],
   controllers: [AppController],
   providers: [AppService]

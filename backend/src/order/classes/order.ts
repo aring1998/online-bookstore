@@ -1,10 +1,9 @@
-import { IsNotEmpty, IsEnum, IsNumber, IsPhoneNumber } from 'class-validator'
+import { IsNotEmpty, IsEnum, IsNumber } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto'
 
 class OrderBaseDTO {
   @ApiProperty({ example: 1, description: '用户id' })
-  @IsNumber()
   userId?: number
 
   @ApiProperty({ example: 4, description: '分类id' })
@@ -15,21 +14,9 @@ class OrderBaseDTO {
   @IsNumber()
   commodityId?: number
 
-  @ApiProperty({ example: 'aring', description: '收货人' })
-  @IsNotEmpty()
-  consignee?: string
-
-  @ApiProperty({ example: '13000000000', description: '联系方式' })
-  @IsNotEmpty()
-  tel?: string
-
-  @ApiProperty({ example: 350000, description: '收货地址编码' })
+  @ApiProperty({ example: 2, description: '收货地址id' })
   @IsNumber()
-  receiveAddressCode?: number
-
-  @ApiProperty({ example: 'xx小区6栋601', description: '收货详细地址' })
-  @IsNotEmpty()
-  receiveDetailAddress?: string
+  receivingId?: number
 
   @ApiProperty({ example: '2022-01-01', description: '下单时间' })
   orderTime?: string
