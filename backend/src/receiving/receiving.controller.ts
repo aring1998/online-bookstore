@@ -3,8 +3,9 @@ import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { ReceivingService } from './receiving.service'
 import { UserService } from 'src/user/user.service'
-import { ReceivingResDTO, ReceivingPageResDTO, ReceivingAddDTO, ReceivingListDTO, ReceivingUpdateDTO, ReceivingDTO, ReceivingDelDTO } from './classes/receiving'
+import { ReceivingResDTO, ReceivingPageResDTO, ReceivingAddDTO, ReceivingUpdateDTO } from './classes/receiving'
 import { BasePageDTO } from 'src/utils/base.dto'
+import { getPayload } from 'src/utils'
 
 @ApiTags('收货地址')
 @Controller('receiving')
@@ -17,11 +18,11 @@ export class ReceivingController {
   async mine(@Headers('token') token: string, @Param(ValidationPipe) params: BasePageDTO): Promise<ReceivingPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { page, pageSize } = params
+    const temp = ['page', 'pageSize']
+    const payload = getPayload(params, temp)
     const data = await this.receivingService.findByPage({
       userId: userInfo.id,
-      page,
-      pageSize,
+      ...payload,
       delFlag: 0
     })
     return suc(data, '')
@@ -33,13 +34,11 @@ export class ReceivingController {
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: ReceivingAddDTO): Promise<ReceivingResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { consignee, tel, receiveAddressCode, receiveDetailAddress } = body
+    const temp = ['consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress']
+    const payload = getPayload(body, temp)
     const data = await this.receivingService.save({
       userId: userInfo.id,
-      consignee,
-      tel,
-      receiveAddressCode,
-      receiveDetailAddress,
+      ...payload
     })
     return suc(data, '添加收货地址成功')
   }
@@ -63,14 +62,12 @@ export class ReceivingController {
   async update(@Headers('token') token: string, @Body(ValidationPipe) body: ReceivingUpdateDTO): Promise<ReceivingResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { id, consignee, tel, receiveAddressCode, receiveDetailAddress } = body
-    const res = await this.receivingService.findOne({ id, userId: userInfo.id, delFlag: 0 })
+    const temp = ['id', 'consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress']
+    const payload = getPayload(body, temp)
+    if (!payload.id) return fail('id不可为空')
+    const res = await this.receivingService.findOne({ id: payload.id, userId: userInfo.id, delFlag: 0 })
     if (!res) return fail('未查询到数据')
-    const params = {consignee, tel, receiveAddressCode, receiveDetailAddress}
-    for (let key in params) {
-      res[key] = params[key]
-    }
-    const data = await this.receivingService.save(res)
+    const data = await this.receivingService.update(payload.id, payload)
     return suc(data, '修改收货地址成功')
   }
 }

@@ -17,13 +17,7 @@ export class BasePageDTO {
   pageSize: number
 }
 
-export class BasePageDataDTO {
+export class BasePageDataDTO extends BasePageDTO {
   @ApiProperty({ example: 1, description: '数据总数' })
   count?: number
-
-  @ApiProperty({ example: 1, description: '当前页码' })
-  page?: number
-
-  @ApiProperty({ example: 20, description: '每页展示条数' })
-  pageSize?: number
 }

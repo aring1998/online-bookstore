@@ -6,6 +6,7 @@ import { UserService } from 'src/user/user.service'
 import { OrderResDTO, OrderPageResDTO, OrderAddDTO, OrderListDTO, OrderUpdateDTO } from './classes/order'
 import * as moment from 'moment'
 import { BasePageDTO } from 'src/utils/base.dto'
+import { getPayload } from 'src/utils'
 
 @ApiTags('订单')
 @Controller('order')
@@ -34,12 +35,11 @@ export class OrderController {
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: OrderAddDTO): Promise<OrderResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { categoryId, commodityId, receivingId } = body
+    const temp = ['categoryId', 'commodityId', 'receivingId']
+    const payload = getPayload(body, temp)
     const data = await this.orderService.save({
       userId: userInfo.id,
-      categoryId,
-      commodityId,
-      receivingId,
+      ...payload,
       orderTime: moment().format('YYYY-MM-DD HH:mm:ss')
     })
     return suc(data, '下单成功')
@@ -50,18 +50,21 @@ export class OrderController {
   @ApiResponse({ status: 0, type: OrderPageResDTO })
   async list(@Headers('token') token: string, @Body(ValidationPipe) body: OrderListDTO): Promise<OrderPageResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const { username, consignee, categoryId, commodityName, receiveAddressCode, orderTimeStart, orderTimeEnd, orderType, page, pageSize } = body
+    const temp = [
+      'username',
+      'consignee',
+      'categoryId',
+      'commodityName',
+      'receiveAddressCode',
+      'orderTimeStart',
+      'orderTimeEnd',
+      'orderType',
+      'page',
+      'pageSize'
+    ]
+    const payload = getPayload(body, temp)
     const data = await this.orderService.findByPage({
-      username,
-      consignee,
-      categoryId,
-      commodityName,
-      receiveAddressCode,
-      orderTimeStart,
-      orderTimeEnd,
-      orderType,
-      page,
-      pageSize,
+      ...payload,
       delFlag: 0
     })
     return suc(data, '')

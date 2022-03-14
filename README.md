@@ -1,7 +1,7 @@
 # 📚 网上书店
 
 ## 📖介绍
-网上书店是一个简易的训练项目，经典的后管+商城业务，查看业务脑图及页面概样请查看[.dev-docs](./.dev-docs/main.png)
+网上书店是一个简易的训练项目，经典的后管+商城业务，查看业务脑图及页面概样请打开根目录下[.dev-docs](./.dev-docs/main.png)
 
 权限账户：`用户名:admin 密码:123456` *(请注意密码需转md5)*
 
@@ -16,7 +16,7 @@ root
 
 ## ✨前端项目推荐
 ### inbook
-技术栈：` Vue 3 Vite2 pnpm ESBuild i18n`
+技术栈：` Vue 3 Vite2 pnpm ESBuild i18n `
 
 仓库：[https://gitee.com/funzeros/inbook](https://gitee.com/funzeros/inbook)
 

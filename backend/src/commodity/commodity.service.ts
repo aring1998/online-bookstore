@@ -2,35 +2,24 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Commodity } from 'src/entities/commodity.entity'
-import { CommodityDTO } from './classes/commodity'
+import { CommodityDTO, CommodityListDTO } from './classes/commodity'
 import { Category } from 'src/entities/category.entity'
-import { vaildParams } from 'src/utils'
+import { BaseSevice } from 'src/utils/base.service'
 
 @Injectable()
-export class CommodityService {
+export class CommodityService extends BaseSevice<CommodityDTO> {
   constructor(
     @InjectRepository(Commodity)
-    private readonly CommodityRepository: Repository<Commodity>
-  ) {}
-
-  async save(data: CommodityDTO): Promise<CommodityDTO> {
-    return await this.CommodityRepository.save(data)
+    private readonly CommodityRepository: Repository<CommodityDTO>
+  ) {
+    super(CommodityRepository)
   }
 
-  async find(option?: CommodityDTO): Promise<CommodityDTO[]> {
-    return await this.CommodityRepository.find(option)
-  }
-
-  async findOne(option?: CommodityDTO): Promise<CommodityDTO> {
-    return await this.CommodityRepository.findOne(option)
-  }
-
-  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: CommodityDTO[]; count: number }> {
+  async findByPage(option: CommodityListDTO): Promise<{ data: CommodityDTO[]; count: number }> {
     const { page = 1, pageSize = 200, publicationTimeStart, publicationTimeEnd, ...where } = option
     let sql = this.CommodityRepository.createQueryBuilder('commodity')
-      // .leftJoinAndMapOne('commodity.category',Category, 'category', 'category.id = commodity.categoryId')
       .leftJoin(Category, 'category', 'category.id = commodity.categoryId')
-      .where({ ...vaildParams(where) })
+      .where({ ...where, delFlag: 0 })
     if (publicationTimeStart && publicationTimeEnd) {
       sql = sql.andWhere('publicationTime BETWEEN :start AND :end', {
         start: publicationTimeStart,

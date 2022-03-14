@@ -28,11 +28,11 @@ export class UserResDTO extends BaseResDTO {
 
 export class UserLoginDTO{
   @ApiProperty({ example: 'aring', description: '用户名' })
-  @IsNotEmpty({ message: '用户名不能为空' })
+  @IsNotEmpty()
   username: string
 
-  @ApiProperty({ example: '123456', description: '密码' })
-  @IsNotEmpty({ message: '密码不能为空' })
+  @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
+  @IsNotEmpty()
   password: string
 }
 

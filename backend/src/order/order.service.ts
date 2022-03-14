@@ -8,24 +8,15 @@ import { Category } from 'src/entities/category.entity'
 import { User } from 'src/entities/user.entity'
 import { Commodity } from 'src/entities/commodity.entity'
 import { Receiving } from 'src/entities/receiving.entity'
+import { BaseSevice } from 'src/utils/base.service'
 
 @Injectable()
-export class OrderService {
+export class OrderService extends BaseSevice<OrderDTO> {
   constructor(
     @InjectRepository(Order)
     private readonly OrderRepository: Repository<OrderDTO>
-  ) {}
-
-  async save(data: Partial<OrderDTO>): Promise<OrderDTO> {
-    return await this.OrderRepository.save(data)
-  }
-
-  async find(option?: OrderDTO): Promise<OrderDTO[]> {
-    return await this.OrderRepository.find(option)
-  }
-
-  async findOne(option?: OrderDTO): Promise<OrderDTO> {
-    return await this.OrderRepository.findOne(option)
+  ) {
+    super(OrderRepository)
   }
 
   async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: OrderPageDTO[]; count: number }> {
