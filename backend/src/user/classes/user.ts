@@ -27,26 +27,16 @@ export class UserResDTO extends BaseResDTO {
 }
 
 export class UserLoginDTO {
-  @ApiProperty({ example: 'aring', description: '用户名' })
+  @ApiProperty({ example: 'aring', description: '用户名/邮箱' })
+  @IsNotEmpty()
   username: string
 
   @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
   @IsNotEmpty()
   password: string
-
-  @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
-  email?: string
 }
 
-export class UserRegisterDTO {
-  @ApiProperty({ example: 'aring', description: '用户名' })
-  @IsNotEmpty()
-  username: string
-
-  @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
-  @IsNotEmpty()
-  password: string
-
+export class UserRegisterDTO extends UserLoginDTO {
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
   email?: string
 }

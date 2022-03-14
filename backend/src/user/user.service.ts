@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { BaseSevice } from 'src/utils/base.service'
-import { UserDTO } from './classes/user'
 
 @Injectable()
 export class UserService extends BaseSevice<User> {
@@ -22,10 +21,6 @@ export class UserService extends BaseSevice<User> {
     })
   }
 
-  async find(option?: Object): Promise<any> {
-    return await this.userRepository.find(option)
-  }
-
   async findOne(option?: Object, getPassword: Boolean = false): Promise<User> {
     const res = await this.userRepository.findOne(option)
     if (res && !getPassword) {
@@ -35,8 +30,8 @@ export class UserService extends BaseSevice<User> {
     return res
   }
 
-  async findUser(option?: { username: string; email: string }, getPassword: Boolean = false): Promise<User> {
-    const res = await this.userRepository.createQueryBuilder().andWhere(`username = '${option.username}' OR email = '${option.email}'`).getOne()
+  async findUser(option?: { username: string }, getPassword: Boolean = false): Promise<User> {
+    const res = await this.userRepository.createQueryBuilder().where(`username = '${option.username}' OR email = '${option.username}'`).getOne()
     if (res && !getPassword) {
       const { password: _, ...newRes } = res
       return newRes as any

@@ -34,10 +34,9 @@ export class UserController {
   @ApiOperation({ summary: '登录(支持邮箱登录)' })
   @ApiResponse({ status: 0, type: UserResDTO })
   async login(@Body(ValidationPipe) body: UserLoginDTO): Promise<UserResDTO> {
-    const { username, password, email } = body
+    const { username, password } = body
 
-    if (!username && !email) return fail('请输入用户名/邮箱')
-    const userInfo = await this.userSrvice.findUser({ username, email }, true)
+    const userInfo = await this.userSrvice.findUser({ username }, true)
     if (!userInfo) return fail('用户名不存在')
     if (userInfo.password !== password) return fail('密码错误')
     await this.userSrvice.updateToken({ id: userInfo.id })
