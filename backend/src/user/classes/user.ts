@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEnum } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO } from 'src/utils/base.dto';
+import { BaseResDTO } from 'src/utils/base.dto'
 
 export class UserDTO {
   @ApiProperty({ example: 1, description: 'id' })
@@ -26,7 +26,19 @@ export class UserResDTO extends BaseResDTO {
   data?: UserDTO
 }
 
-export class UserLoginDTO{
+export class UserLoginDTO {
+  @ApiProperty({ example: 'aring', description: '用户名' })
+  username: string
+
+  @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
+  @IsNotEmpty()
+  password: string
+
+  @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
+  email?: string
+}
+
+export class UserRegisterDTO {
   @ApiProperty({ example: 'aring', description: '用户名' })
   @IsNotEmpty()
   username: string
@@ -34,9 +46,7 @@ export class UserLoginDTO{
   @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
   @IsNotEmpty()
   password: string
-}
 
-export class UserRegisterDTO extends UserLoginDTO {
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
   email?: string
 }
