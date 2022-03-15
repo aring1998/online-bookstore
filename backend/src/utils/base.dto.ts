@@ -19,5 +19,5 @@ export class BasePageDTO {
 
 export class BasePageDataDTO extends BasePageDTO {
   @ApiProperty({ example: 1, description: '数据总数' })
-  count?: number
+  total?: number
 }

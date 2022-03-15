@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Receiving } from 'src/entities/receiving.entity'
-import { ReceivingDTO } from './classes/receiving'
-import { BasePageDataDTO } from 'src/utils/base.dto'
+import { ReceivingDTO, ReceivingPageData } from './classes/receiving'
 import { BaseSevice } from 'src/utils/base.service'
 
 @Injectable()
@@ -15,7 +14,7 @@ export class ReceivingService extends BaseSevice<ReceivingDTO> {
     super(ReceivingRepository)
   }
 
-  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: ReceivingDTO[] } & BasePageDataDTO> {
+  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<ReceivingPageData> {
     const { page = 1, pageSize = 200, ...where } = option
     const res = await this.ReceivingRepository.createQueryBuilder()
       .where({ ...where })
@@ -23,8 +22,8 @@ export class ReceivingService extends BaseSevice<ReceivingDTO> {
       .take(page * pageSize)
       .getManyAndCount()
     return {
-      data: res[0],
-      count: res[1],
+      records: res[0],
+      total: res[1],
       page,
       pageSize
     }

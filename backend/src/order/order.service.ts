@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Order } from 'src/entities/order.entity'
-import { OrderDTO, OrderPageDTO } from './classes/order'
+import { OrderDTO, OrderPageData } from './classes/order'
 import { Category } from 'src/entities/category.entity'
 import { User } from 'src/entities/user.entity'
 import { Commodity } from 'src/entities/commodity.entity'
@@ -18,7 +18,7 @@ export class OrderService extends BaseSevice<OrderDTO> {
     super(OrderRepository)
   }
 
-  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<{ data: OrderPageDTO[]; count: number }> {
+  async findByPage(option: { page: number; pageSize: number; [propName: string]: any }): Promise<OrderPageData> {
     const { page = 1, pageSize = 200, orderTimeStart, orderTimeEnd, receiveAddressCode, commodityName, username, consignee, ...where } = option
     let sql = this.OrderRepository.createQueryBuilder('order')
       .leftJoin(Category, 'category', 'order.categoryId = category.id')
@@ -36,7 +36,7 @@ export class OrderService extends BaseSevice<OrderDTO> {
     if (receiveAddressCode) sql = sql.andWhere(`receiving.receiveAddressCode = '${receiveAddressCode}'`)
     if (consignee) sql = sql.andWhere(`receiving.consignee = '${consignee}'`)
     if (commodityName) sql = sql.andWhere(`commodity.name LIKE ${commodityName}`)
-    const data = await sql
+    const records = await sql
       .select(
         `
         \`order\`.*,
@@ -51,10 +51,12 @@ export class OrderService extends BaseSevice<OrderDTO> {
       .skip((page - 1) * pageSize)
       .take(page * pageSize)
       .getRawMany()
-    const count = await sql.getCount()
+    const total = await sql.getCount()
     return {
-      data,
-      count
+      records,
+      total,
+      page,
+      pageSize
     }
   }
 }

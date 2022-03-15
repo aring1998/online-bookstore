@@ -16,8 +16,7 @@ export class CommodityController {
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityAddDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const temp = ['name', 'price', 'author', 'categoryId']
-    const payload = getPayload<CommodityAddDTO>(body, temp)
+    const payload = getPayload(body, ['name', 'price', 'author', 'categoryId'])
     const data = await this.commodityService.save({ ...payload })
     return suc(data, '添加商品成功')
   }
@@ -26,8 +25,15 @@ export class CommodityController {
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
   async list(@Body(ValidationPipe) body: CommodityListDTO): Promise<CommodityPageResDTO> {
-    const temp = ['name', 'categoryId', 'author', 'page', 'pageSize', 'publicationTimeStart', 'publicationTimeEnd']
-    const payload = getPayload<CommodityListDTO>(body, temp)
+    const payload = getPayload<CommodityListDTO>(body, [
+      'name',
+      'categoryId',
+      'author',
+      'page',
+      'pageSize',
+      'publicationTimeStart',
+      'publicationTimeEnd'
+    ])
     const data = await this.commodityService.findByPage({ ...payload })
     return suc(data, '')
   }
@@ -47,8 +53,18 @@ export class CommodityController {
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async update(@Headers('token') token: string, @Body() body: CommodityUpdateDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const temp = ['id', 'name', 'categoryId', 'price', 'author', 'press', 'publicationTime', 'word', 'introduce', 'imgUrl']
-    const payload = getPayload<CommodityUpdateDTO>(body, temp)
+    const payload = getPayload<CommodityUpdateDTO>(body, [
+      'id',
+      'name',
+      'categoryId',
+      'price',
+      'author',
+      'press',
+      'publicationTime',
+      'words',
+      'introduce',
+      'imgUrl'
+    ])
     if (!payload.id) return fail('id不可为空')
     const data = await this.commodityService.update<CommodityUpdateDTO>(payload.id, payload)
     return suc(data, '修改成功')

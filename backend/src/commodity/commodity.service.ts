@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Commodity } from 'src/entities/commodity.entity'
-import { CommodityDTO, CommodityListDTO } from './classes/commodity'
+import { CommodityDTO, CommodityListDTO, CommodityPageData } from './classes/commodity'
 import { Category } from 'src/entities/category.entity'
 import { BaseSevice } from 'src/utils/base.service'
 
@@ -15,7 +15,7 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
     super(CommodityRepository)
   }
 
-  async findByPage(option: CommodityListDTO): Promise<{ data: CommodityDTO[]; count: number }> {
+  async findByPage(option: CommodityListDTO): Promise<CommodityPageData> {
     const { page = 1, pageSize = 200, publicationTimeStart, publicationTimeEnd, ...where } = option
     let sql = this.CommodityRepository.createQueryBuilder('commodity')
       .leftJoin(Category, 'category', 'category.id = commodity.categoryId')
@@ -26,7 +26,7 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
         end: publicationTimeEnd
       })
     }
-    const data = await sql
+    const records = await sql
       .select(
         `
         commodity.*,
@@ -36,10 +36,12 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
       .skip((page - 1) * pageSize)
       .take(page * pageSize)
       .getRawMany()
-    const count = await sql.getCount()
+    const total = await sql.getCount()
     return {
-      data,
-      count
+      records,
+      total,
+      page,
+      pageSize
     }
   }
 }

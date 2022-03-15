@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsEnum, IsDateString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto'
+import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/utils/base.dto'
 
-class BaseDTO {
+class CommodityBaseDTO {
   @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称' })
   @IsNotEmpty({ message: '商品名称不能为空' })
   name?: string
@@ -34,8 +34,7 @@ class BaseDTO {
   @ApiProperty({ example: 'http://81.68.189.158:3088/public/TangShi300.png', description: '商品图片', required: false })
   imgUrl?: string
 }
-
-export class CommodityDTO extends BaseDTO {
+export class CommodityDTO extends CommodityBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
   id?: number
 
@@ -52,20 +51,16 @@ export class CommodityResDTO extends BaseResDTO {
   data?: CommodityDTO
 }
 
-class CommodityPageData {
+export class CommodityPageData extends BasePageDataDTO {
   @ApiProperty({ type: [CommodityDTO] })
-  data: CommodityDTO[]
-  @ApiProperty({ example: 1, description: '数据总数' })
-  count: number
+  records: CommodityDTO[]
 }
-
 export class CommodityPageResDTO extends BaseResDTO {
   @ApiProperty({ type: CommodityPageData, description: '分页数据' })
   data?: CommodityPageData
 }
 
-export class CommodityAddDTO extends BaseDTO {}
-
+export class CommodityAddDTO extends CommodityBaseDTO {}
 export class CommodityListDTO extends BasePageDTO {
   @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称' })
   name: string
@@ -84,8 +79,7 @@ export class CommodityListDTO extends BasePageDTO {
   @IsDateString()
   publicationTimeEnd: string
 }
-
-export class CommodityUpdateDTO extends BaseDTO {
+export class CommodityUpdateDTO extends CommodityBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
   id: number
 }

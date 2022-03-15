@@ -18,8 +18,7 @@ export class ReceivingController {
   async mine(@Headers('token') token: string, @Param(ValidationPipe) params: BasePageDTO): Promise<ReceivingPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const temp = ['page', 'pageSize']
-    const payload = getPayload(params, temp)
+    const payload = getPayload(params, ['page', 'pageSize'])
     const data = await this.receivingService.findByPage({
       userId: userInfo.id,
       ...payload,
@@ -34,8 +33,7 @@ export class ReceivingController {
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: ReceivingAddDTO): Promise<ReceivingResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const temp = ['consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress']
-    const payload = getPayload(body, temp)
+    const payload = getPayload(body, ['consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress'])
     const data = await this.receivingService.save({
       userId: userInfo.id,
       ...payload
@@ -62,8 +60,7 @@ export class ReceivingController {
   async update(@Headers('token') token: string, @Body(ValidationPipe) body: ReceivingUpdateDTO): Promise<ReceivingResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const temp = ['id', 'consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress']
-    const payload = getPayload(body, temp)
+    const payload = getPayload(body, ['id', 'consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress'])
     if (!payload.id) return fail('id不可为空')
     const res = await this.receivingService.findOne({ id: payload.id, userId: userInfo.id, delFlag: 0 })
     if (!res) return fail('未查询到数据')

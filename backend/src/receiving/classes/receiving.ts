@@ -22,7 +22,6 @@ class ReceivingBaseDTO {
   @IsNotEmpty()
   receiveDetailAddress?: string
 }
-
 export class ReceivingDTO extends ReceivingBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
   id?: number
@@ -37,22 +36,16 @@ export class ReceivingResDTO extends BaseResDTO {
   data?: ReceivingDTO
 }
 
-export class ReceivingPageDTO extends ReceivingDTO {
-
+export class ReceivingPageData extends BasePageDataDTO {
+  @ApiProperty({ type: [ReceivingDTO] })
+  records: ReceivingDTO[]
 }
-
-class ReceivingPageData extends BasePageDataDTO {
-  @ApiProperty({ type: [ReceivingPageDTO] })
-  data: ReceivingPageDTO[]
-}
-
 export class ReceivingPageResDTO extends BaseResDTO {
   @ApiProperty({ type: ReceivingPageData, description: '分页数据' })
   data?: ReceivingPageData
 }
 
 export class ReceivingAddDTO extends ReceivingBaseDTO {}
-
 export class ReceivingListDTO extends BasePageDTO {
   @ApiProperty({ example: 'aring', description: '下单用户名', required: false })
   username: string
@@ -78,13 +71,6 @@ export class ReceivingListDTO extends BasePageDTO {
   @ApiProperty({ enum: [-1, 0, 1, 2], description: '订单状态(-1: 已取消; 0: 已下单; 1: 已发货; 2: 已完成)' })
   receivingType: number
 }
-
-export class ReceivingDelDTO {
-  @ApiProperty({ example: 3, description: 'id' })
-  @IsNumber()
-  id: number
-}
-
 export class ReceivingUpdateDTO {
   @ApiProperty({ example: 3, description: 'id' })
   @IsNumber()

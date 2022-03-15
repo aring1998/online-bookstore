@@ -1,4 +1,4 @@
-export const getPayload = <T extends object>(data: T, temp: string[]): T => {
+export const getPayload = <T extends object>(data: T, temp: (keyof T)[]): T => {
   const res: T = Object()
   for (let key in data) {
     if (temp.includes(key) && data[key] !== undefined && data[key] !== null && (data[key] as unknown) !== '') res[key] = data[key]

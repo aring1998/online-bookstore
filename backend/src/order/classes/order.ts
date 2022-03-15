@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEnum, IsNumber } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto'
+import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/utils/base.dto'
 
 class OrderBaseDTO {
   @ApiProperty({ example: 1, description: '用户id' })
@@ -24,13 +24,9 @@ class OrderBaseDTO {
   @ApiProperty({ enum: [-1, 0, 1, 2], description: '订单状态(-1: 已取消; 0: 已下单; 1: 已发货; 2: 已完成)' })
   orderType?: number
 }
-
 export class OrderDTO extends OrderBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
   id?: number
-
-  @ApiProperty({ example: '名著', description: '分类名称' })
-  name?: string
 
   @ApiProperty({ enum: [0, 1], description: '失效标识' })
   @IsEnum({ Common: 0, Deleted: 1 })
@@ -42,7 +38,7 @@ export class OrderResDTO extends BaseResDTO {
   data?: OrderDTO
 }
 
-export class OrderPageDTO extends OrderDTO {
+class OrderPageDTO extends OrderDTO {
   @ApiProperty({ example: '分类名', description: '名著' })
   categoryName: string
 
@@ -52,21 +48,16 @@ export class OrderPageDTO extends OrderDTO {
   @ApiProperty({ example: '唐诗300首', description: '商品名' })
   commodityName: string
 }
-
-class OrderPageData {
+export class OrderPageData extends BasePageDataDTO {
   @ApiProperty({ type: [OrderPageDTO] })
-  data: OrderPageDTO[]
-  @ApiProperty({ example: 1, description: '数据总数' })
-  count: number
+  records: OrderPageDTO[]
 }
-
 export class OrderPageResDTO extends BaseResDTO {
   @ApiProperty({ type: OrderPageData, description: '分页数据' })
   data?: OrderPageData
 }
 
 export class OrderAddDTO extends OrderBaseDTO {}
-
 export class OrderListDTO extends BasePageDTO {
   @ApiProperty({ example: 'aring', description: '下单用户名', required: false })
   username: string
@@ -92,7 +83,6 @@ export class OrderListDTO extends BasePageDTO {
   @ApiProperty({ enum: [-1, 0, 1, 2], description: '订单状态(-1: 已取消; 0: 已下单; 1: 已发货; 2: 已完成)' })
   orderType: number
 }
-
 export class OrderUpdateDTO {
   @ApiProperty({ example: 3, description: 'id' })
   @IsNotEmpty()

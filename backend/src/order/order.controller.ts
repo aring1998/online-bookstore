@@ -35,8 +35,7 @@ export class OrderController {
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: OrderAddDTO): Promise<OrderResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const temp = ['categoryId', 'commodityId', 'receivingId']
-    const payload = getPayload(body, temp)
+    const payload = getPayload(body, ['categoryId', 'commodityId', 'receivingId'])
     const data = await this.orderService.save({
       userId: userInfo.id,
       ...payload,
@@ -50,7 +49,7 @@ export class OrderController {
   @ApiResponse({ status: 0, type: OrderPageResDTO })
   async list(@Headers('token') token: string, @Body(ValidationPipe) body: OrderListDTO): Promise<OrderPageResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const temp = [
+    const payload = getPayload(body, [
       'username',
       'consignee',
       'categoryId',
@@ -61,8 +60,7 @@ export class OrderController {
       'orderType',
       'page',
       'pageSize'
-    ]
-    const payload = getPayload(body, temp)
+    ])
     const data = await this.orderService.findByPage({
       ...payload,
       delFlag: 0
