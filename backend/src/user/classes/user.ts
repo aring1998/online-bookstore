@@ -4,21 +4,26 @@ import { BaseResDTO } from 'src/utils/base.dto'
 
 export class UserDTO {
   @ApiProperty({ example: 1, description: 'id' })
-  id: number
+  id?: number
 
   @ApiProperty({ example: 'aring', description: '用户名' })
   @IsOptional()
-  username: string
+  username?: string
 
   @ApiProperty({ example: 'afa3b86e-dce0-4dbd-ad05-4422db248764', description: '令牌' })
-  token: string
+  token?: string
 
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱' })
-  email: string
+  email?: string
 
   @ApiProperty({ enum: [0, 1], description: '权限' })
   @IsEnum({ User: 0, Admin: 1 })
-  auth: number
+  auth?: number
+}
+
+export class UserWholeDTO extends UserDTO {
+  @ApiProperty({ example: 1, description: 'id' })
+  password?: string
 }
 
 export class UserResDTO extends BaseResDTO {

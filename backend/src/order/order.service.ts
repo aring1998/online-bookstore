@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Order } from 'src/entities/order.entity'
 import { OrderDTO, OrderPageDTO } from './classes/order'
-import { vaildParams } from 'src/utils'
 import { Category } from 'src/entities/category.entity'
 import { User } from 'src/entities/user.entity'
 import { Commodity } from 'src/entities/commodity.entity'
@@ -26,7 +25,7 @@ export class OrderService extends BaseSevice<OrderDTO> {
       .leftJoin(User, 'user', 'order.userId = user.id')
       .leftJoin(Commodity, 'commodity', 'order.commodityId = commodity.id')
       .leftJoin(Receiving, 'receiving', 'order.receivingId = receiving.id')
-      .where({ ...vaildParams(where) })
+      .where({ ...where })
     if (orderTimeStart && orderTimeEnd) {
       sql = sql.andWhere('publicationTime BETWEEN :start AND :end', {
         start: orderTimeStart,

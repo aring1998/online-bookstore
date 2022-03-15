@@ -36,11 +36,11 @@ export class UserController {
   async login(@Body(ValidationPipe) body: UserLoginDTO): Promise<UserResDTO> {
     const { username, password } = body
 
-    const userInfo = await this.userSrvice.findUser({ username }, true)
+    const userInfo = await this.userSrvice.findUser({ username })
     if (!userInfo) return fail('用户名不存在')
     if (userInfo.password !== password) return fail('密码错误')
-    await this.userSrvice.updateToken({ id: userInfo.id })
-    return suc(userInfo, '登录成功')
+    const data = await this.userSrvice.updateToken({ id: userInfo.id })
+    return suc(data, '登录成功')
   }
 
   @Post('token')

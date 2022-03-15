@@ -4,46 +4,44 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { BaseSevice } from 'src/utils/base.service'
+import { UserDTO, UserWholeDTO } from './classes/user'
 
 @Injectable()
-export class UserService extends BaseSevice<User> {
+export class UserService extends BaseSevice<UserWholeDTO> {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<UserWholeDTO>
   ) {
     super(userRepository)
   }
 
-  async save(data: Partial<User>): Promise<User> {
-    return await this.userRepository.save({
+  async save(data: Partial<UserWholeDTO>): Promise<UserDTO> {
+    const res = await this.userRepository.save({
       ...data,
       token: uuidv4()
     })
+    return this.findOne({ id: res.id })
   }
 
-  async findOne(option?: Object, getPassword: Boolean = false): Promise<User> {
+  async findOne(option: UserDTO, getPassword: Boolean = false): Promise<UserWholeDTO | UserDTO> {
     const res = await this.userRepository.findOne(option)
     if (res && !getPassword) {
       const { password: _, ...newRes } = res
-      return newRes as any
+      return newRes
     }
     return res
   }
 
-  async findUser(option?: { username: string }, getPassword: Boolean = false): Promise<User> {
-    const res = await this.userRepository.createQueryBuilder().where(`username = '${option.username}' OR email = '${option.username}'`).getOne()
-    if (res && !getPassword) {
-      const { password: _, ...newRes } = res
-      return newRes as any
-    }
-    return res
+  findUser(option: { username: string }): Promise<UserWholeDTO> {
+    return this.userRepository.createQueryBuilder().where(`username = '${option.username}' OR email = '${option.username}'`).getOne()
   }
 
-  async updateToken(option: any): Promise<any> {
-    return await this.userRepository.update(option, { token: uuidv4() })
+  async updateToken(option: { id: number }): Promise<UserDTO> {
+    await this.userRepository.update(option, { token: uuidv4() })
+    return this.userRepository.findOne(option)
   }
 
-  async vaildAuth(option: { token: string }): Promise<any> {
+  async vaildAuth(option: { token: string }): Promise<number> {
     const data = await this.userRepository.findOne({ ...option })
     return data?.auth
   }
