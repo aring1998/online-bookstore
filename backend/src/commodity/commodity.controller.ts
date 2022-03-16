@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Param, Headers } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Param, Headers, Get } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CommodityService } from './commodity.service'
@@ -21,11 +21,11 @@ export class CommodityController {
     return suc(data, '添加商品成功')
   }
 
-  @Post('list')
+  @Get('list')
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
-  async list(@Body(ValidationPipe) body: CommodityListDTO): Promise<CommodityPageResDTO> {
-    const payload = getPayload<CommodityListDTO>(body, [
+  async list(@Param(ValidationPipe) params: CommodityListDTO): Promise<CommodityPageResDTO> {
+    const payload = getPayload<CommodityListDTO>(params, [
       'name',
       'categoryId',
       'author',

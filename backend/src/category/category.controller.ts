@@ -1,9 +1,10 @@
-import { Controller, Post, Body, ValidationPipe, Param, Headers } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Param, Headers, Get } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CategoryService } from './category.service'
 import { UserService } from 'src/user/user.service'
 import { CategoryResDTO, CategoryPageResDTO, CategoryAddDTO, CategoryListDTO, CategoryUpdateDTO } from './classes/category'
+import { getPayload } from 'src/utils'
 
 @ApiTags('分类')
 @Controller('category')
@@ -21,16 +22,14 @@ export class CategoryController {
     return suc(data, '添加分类成功')
   }
 
-  @Post('list')
+  @Get('list')
   @ApiOperation({ summary: '分类列表' })
   @ApiResponse({ status: 0, type: CategoryPageResDTO })
-  async list(@Headers('token') token: string, @Body(ValidationPipe) body: CategoryListDTO): Promise<CategoryPageResDTO> {
+  async list(@Headers('token') token: string, @Body(ValidationPipe) params: CategoryListDTO): Promise<CategoryPageResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const { name, page, pageSize } = body
+    const payload = getPayload(params, ['name', 'page', 'pageSize'])
     const data = await this.categoryService.findByPage({
-      name,
-      page,
-      pageSize,
+      ...payload,
       delFlag: 0
     })
     return suc(data, '')

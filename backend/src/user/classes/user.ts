@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEnum } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsEnum, Length } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO } from 'src/utils/base.dto'
 
@@ -33,10 +33,12 @@ export class UserResDTO extends BaseResDTO {
 
 export class UserLoginDTO {
   @ApiProperty({ example: 'aring', description: '用户名/邮箱' })
+  @Length(4, 32)
   @IsNotEmpty()
   username: string
 
   @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
+  @Length(6, 32)
   @IsNotEmpty()
   password: string
 }

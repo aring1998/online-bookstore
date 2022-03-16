@@ -58,12 +58,12 @@ export class OrderController {
     return suc(data, '下单成功')
   }
 
-  @Post('list')
+  @Get('list')
   @ApiOperation({ summary: '订单列表' })
   @ApiResponse({ status: 0, type: OrderPageResDTO })
-  async list(@Headers('token') token: string, @Body(ValidationPipe) body: OrderListDTO): Promise<OrderPageResDTO> {
+  async list(@Headers('token') token: string, @Param(ValidationPipe) params: OrderListDTO): Promise<OrderPageResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const payload = getPayload(body, [
+    const payload = getPayload(params, [
       'username',
       'consignee',
       'receiveAddressCode',
