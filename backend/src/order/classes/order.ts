@@ -1,22 +1,28 @@
-import { IsNotEmpty, IsEnum, IsNumber } from 'class-validator'
+import { IsNotEmpty, IsEnum, IsNumber, IsArray, ArrayNotEmpty, ValidateNested, IsMobilePhone } from 'class-validator'
+import { Type } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/utils/base.dto'
+import { OrderDetailAddDTO } from 'src/order-detail/classes/order-detail.'
 
 class OrderBaseDTO {
   @ApiProperty({ example: 1, description: '用户id' })
   userId?: number
 
-  @ApiProperty({ example: 4, description: '分类id' })
-  @IsNumber()
-  categoryId?: number
+  @ApiProperty({ example: 'aring', description: '收货人' })
+  @IsNotEmpty()
+  consignee?: string
 
-  @ApiProperty({ example: 5, description: '商品id' })
-  @IsNumber()
-  commodityId?: number
+  @ApiProperty({ example: '13000000000', description: '联系方式' })
+  @IsMobilePhone()
+  tel?: string
 
-  @ApiProperty({ example: 2, description: '收货地址id' })
+  @ApiProperty({ example: 350000, description: '收货地址编码' })
   @IsNumber()
-  receivingId?: number
+  receiveAddressCode?: number
+
+  @ApiProperty({ example: 'xx小区6栋601', description: '收货详细地址' })
+  @IsNotEmpty()
+  receiveDetailAddress?: string
 
   @ApiProperty({ example: '2022-01-01', description: '下单时间' })
   orderTime?: string
@@ -57,19 +63,21 @@ export class OrderPageResDTO extends BaseResDTO {
   data?: OrderPageData
 }
 
-export class OrderAddDTO extends OrderBaseDTO {}
+export class OrderAddDTO extends OrderBaseDTO {
+  @ApiProperty({ type: [OrderDetailAddDTO], description: '下单清单' })
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => OrderDetailAddDTO)
+  orderList?: OrderDetailAddDTO[]
+}
+
 export class OrderListDTO extends BasePageDTO {
   @ApiProperty({ example: 'aring', description: '下单用户名', required: false })
   username: string
 
   @ApiProperty({ example: 'aring', description: '收货人', required: false })
   consignee: string
-
-  @ApiProperty({ example: 1, description: '分类id', required: false })
-  categoryId: number
-  
-  @ApiProperty({ example: '唐诗', description: '商品名(模糊查询)', required: false })
-  commodityName: string
   
   @ApiProperty({ example: 350000, description: '收货地区', required: false })
   receiveAddressCode: number

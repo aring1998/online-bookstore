@@ -7,6 +7,10 @@ export class BaseSevice<T> {
     return this.repository.save(data)
   }
 
+  saveMany(data: T[]): Promise<T[]> {
+    return this.repository.save(data)
+  }
+
   find(option: T): Promise<T[]> {
     return this.repository.find(option)
   }

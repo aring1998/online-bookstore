@@ -1,17 +1,23 @@
-import { Controller, Post, Body, ValidationPipe, Get, Query, Param, Headers } from '@nestjs/common'
+import * as moment from 'moment'
+import { Controller, Post, Body, ValidationPipe, Get, Param, Headers } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { OrderService } from './order.service'
 import { UserService } from 'src/user/user.service'
 import { OrderResDTO, OrderPageResDTO, OrderAddDTO, OrderListDTO, OrderUpdateDTO } from './classes/order'
-import * as moment from 'moment'
 import { BasePageDTO } from 'src/utils/base.dto'
 import { getPayload } from 'src/utils'
+import { OrderDetailService } from 'src/order-detail/order-detail.service'
+import { OrderDetailPageResDTO } from 'src/order-detail/classes/order-detail.'
 
 @ApiTags('订单')
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService, private readonly userService: UserService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly userService: UserService,
+    private readonly OrderDetailService: OrderDetailService
+  ) {}
 
   @Get('mine')
   @ApiOperation({ summary: '我的订单' })
@@ -32,15 +38,23 @@ export class OrderController {
   @Post('add')
   @ApiOperation({ summary: '下单' })
   @ApiResponse({ status: 0, type: OrderResDTO })
-  async add(@Headers('token') token: string, @Body(ValidationPipe) body: OrderAddDTO): Promise<OrderResDTO> {
+  async order(@Headers('token') token: string, @Body(ValidationPipe) body: OrderAddDTO): Promise<OrderResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const payload = getPayload(body, ['categoryId', 'commodityId', 'receivingId'])
+    const payload = getPayload(body, ['consignee', 'tel', 'receiveAddressCode', 'receiveDetailAddress', 'orderList'])
+    if (payload.orderList?.length === 0) return fail('购物清单为空')
+    const { orderList, ...newPayload } = payload
     const data = await this.orderService.save({
+      ...newPayload,
       userId: userInfo.id,
-      ...payload,
       orderTime: moment().format('YYYY-MM-DD HH:mm:ss')
     })
+    const orderDetailList = orderList.map(item => ({
+      ...item,
+      orderId: data.id
+    }))
+    const orderDetail = await this.OrderDetailService.saveMany(orderDetailList)
+    if (!orderDetail) return fail('下单异常，请重试')
     return suc(data, '下单成功')
   }
 
@@ -52,8 +66,6 @@ export class OrderController {
     const payload = getPayload(body, [
       'username',
       'consignee',
-      'categoryId',
-      'commodityName',
       'receiveAddressCode',
       'orderTimeStart',
       'orderTimeEnd',
@@ -83,5 +95,20 @@ export class OrderController {
     else if (orderType === 2) message = '完成订单成功'
     else if (orderType === -1) message = '取消订单成功'
     return suc(data, message)
+  }
+
+  @Post('detail/:id')
+  @ApiOperation({ summary: '订单详情' })
+  @ApiResponse({ status: 0, type: OrderDetailPageResDTO })
+  async detail(@Headers('token') token: string, @Param('id') id: number, @Body() body: BasePageDTO): Promise<OrderDetailPageResDTO> {
+    const userInfo = await this.userService.findOne({ token })
+    if (!userInfo) return fail('请先登录')
+    const payload = getPayload(body, ['page', 'pageSize'])
+    const data = await this.OrderDetailService.findByPage({
+      ...payload,
+      orderId: id,
+      userId: userInfo.auth !== 1 ? userInfo.id : null
+    })
+    return suc(data, '')
   }
 }

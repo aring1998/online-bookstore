@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Get, Query, Param, Headers } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Param, Headers } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CategoryService } from './category.service'
@@ -14,7 +14,7 @@ export class CategoryController {
   @ApiOperation({ summary: '新增分类' })
   @ApiResponse({ status: 0, type: CategoryResDTO })
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: CategoryAddDTO): Promise<CategoryResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { name } = body
     if (await this.categoryService.findOne({ name })) return fail('该分类已存在')
     const data = await this.categoryService.save({ name })
@@ -25,7 +25,7 @@ export class CategoryController {
   @ApiOperation({ summary: '分类列表' })
   @ApiResponse({ status: 0, type: CategoryPageResDTO })
   async list(@Headers('token') token: string, @Body(ValidationPipe) body: CategoryListDTO): Promise<CategoryPageResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { name, page, pageSize } = body
     const data = await this.categoryService.findByPage({
       name,
@@ -40,7 +40,7 @@ export class CategoryController {
   @ApiOperation({ summary: '删除分类' })
   @ApiResponse({ status: 0, type: CategoryResDTO })
   async del(@Headers('token') token: string, @Param('id') id: number): Promise<CategoryResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const res = await this.categoryService.findOne({ id })
     if (!res) return fail('未查询到数据')
     res.delFlag = 1
@@ -51,8 +51,8 @@ export class CategoryController {
   @Post('update')
   @ApiOperation({ summary: '修改分类' })
   @ApiResponse({ status: 0, type: CategoryResDTO })
-  async update(@Headers('token') token: string, @Body() body: CategoryUpdateDTO): Promise<CategoryResDTO> {
-    if (await this.userService.vaildAuth({ token }) !== 1) return fail('您没有权限')
+  async update(@Headers('token') token: string, @Body(ValidationPipe) body: CategoryUpdateDTO): Promise<CategoryResDTO> {
+    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { id, name } = body
     const res = await this.categoryService.findOne({ id })
     if (!res) return fail('未查询到数据')

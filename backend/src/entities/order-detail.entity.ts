@@ -1,30 +1,24 @@
 import { BaseEntity, Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
-export class Order extends BaseEntity {
+export class OrderDetail extends BaseEntity {
   @PrimaryGeneratedColumn() // 自动生成id
   id: number
 
   @Column()
-  userId: number
+  orderId: number
 
   @Column()
-  consignee: string
+  categoryId: number
 
   @Column()
-  tel: string
+  commodityId: number
 
   @Column()
-  receiveAddressCode: number
+  commodityNum: number
 
   @Column()
-  receiveDetailAddress: string
-
-  @Column()
-  orderTime: string
-
-  @Column({ default: 0 })
-  orderType: number
+  commodityPrice: number
 
   @Column({ default: 0 })
   delFlag: number

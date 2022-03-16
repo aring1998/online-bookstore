@@ -51,7 +51,7 @@ export class CommodityController {
   @Post('update')
   @ApiOperation({ summary: '修改商品' })
   @ApiResponse({ status: 0, type: CommodityResDTO })
-  async update(@Headers('token') token: string, @Body() body: CommodityUpdateDTO): Promise<CommodityResDTO> {
+  async update(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityUpdateDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const payload = getPayload<CommodityUpdateDTO>(body, [
       'id',
