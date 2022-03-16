@@ -97,13 +97,13 @@ export class OrderController {
     return suc(data, message)
   }
 
-  @Post('detail/:id')
+  @Get('detail/:id')
   @ApiOperation({ summary: '订单详情' })
   @ApiResponse({ status: 0, type: OrderDetailPageResDTO })
-  async detail(@Headers('token') token: string, @Param('id') id: number, @Body() body: BasePageDTO): Promise<OrderDetailPageResDTO> {
+  async detail(@Headers('token') token: string, @Param('id') id: number, @Param(ValidationPipe) params: BasePageDTO): Promise<OrderDetailPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const payload = getPayload(body, ['page', 'pageSize'])
+    const payload = getPayload(params, ['page', 'pageSize'])
     const data = await this.OrderDetailService.findByPage({
       ...payload,
       orderId: id,
