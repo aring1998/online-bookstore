@@ -1,5 +1,5 @@
 import * as moment from 'moment'
-import { Controller, Post, Body, ValidationPipe, Get, Param, Headers } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Get, Param, Headers, Query } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { OrderService } from './order.service'
@@ -22,10 +22,10 @@ export class OrderController {
   @Get('mine')
   @ApiOperation({ summary: '我的订单' })
   @ApiResponse({ status: 0, type: OrderPageResDTO })
-  async mine(@Headers('token') token: string, @Param(ValidationPipe) params: BasePageDTO): Promise<OrderPageResDTO> {
+  async mine(@Headers('token') token: string, @Query(ValidationPipe) query: BasePageDTO): Promise<OrderPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const { page, pageSize } = params
+    const { page, pageSize } = query
     const data = await this.orderService.findByPage({
       userId: userInfo.id,
       page,
@@ -61,9 +61,9 @@ export class OrderController {
   @Get('list')
   @ApiOperation({ summary: '订单列表' })
   @ApiResponse({ status: 0, type: OrderPageResDTO })
-  async list(@Headers('token') token: string, @Param(ValidationPipe) params: OrderListDTO): Promise<OrderPageResDTO> {
+  async list(@Headers('token') token: string, @Query(ValidationPipe) query: OrderListDTO): Promise<OrderPageResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const payload = getPayload(params, [
+    const payload = getPayload(query, [
       'username',
       'consignee',
       'receiveAddressCode',
@@ -100,10 +100,10 @@ export class OrderController {
   @Get('detail/:id')
   @ApiOperation({ summary: '订单详情' })
   @ApiResponse({ status: 0, type: OrderDetailPageResDTO })
-  async detail(@Headers('token') token: string, @Param('id') id: number, @Param(ValidationPipe) params: BasePageDTO): Promise<OrderDetailPageResDTO> {
+  async detail(@Headers('token') token: string, @Param('id') id: number, @Query(ValidationPipe) query: BasePageDTO): Promise<OrderDetailPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const payload = getPayload(params, ['page', 'pageSize'])
+    const payload = getPayload(query, ['page', 'pageSize'])
     const data = await this.OrderDetailService.findByPage({
       ...payload,
       orderId: id,

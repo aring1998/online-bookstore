@@ -34,8 +34,8 @@ export class OrderService extends BaseSevice<OrderDTO> {
         user.username AS username
       `
       )
-      .skip((page - 1) * pageSize)
-      .take(page * pageSize)
+      .offset((page - 1) * pageSize)
+      .limit(pageSize)
       .getRawMany()
     const total = await sql.getCount()
     return {

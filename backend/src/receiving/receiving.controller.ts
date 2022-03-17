@@ -15,10 +15,10 @@ export class ReceivingController {
   @Get('mine')
   @ApiOperation({ summary: '我的收货地址' })
   @ApiResponse({ status: 0, type: ReceivingPageResDTO })
-  async mine(@Headers('token') token: string, @Param(ValidationPipe) params: BasePageDTO): Promise<ReceivingPageResDTO> {
+  async mine(@Headers('token') token: string, @Query(ValidationPipe) query: BasePageDTO): Promise<ReceivingPageResDTO> {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
-    const payload = getPayload(params, ['page', 'pageSize'])
+    const payload = getPayload(query, ['page', 'pageSize'])
     const data = await this.receivingService.findByPage({
       userId: userInfo.id,
       ...payload,

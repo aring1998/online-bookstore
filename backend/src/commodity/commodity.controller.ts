@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Param, Headers, Get } from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, Param, Headers, Get, Query } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/utils/response'
 import { CommodityService } from './commodity.service'
@@ -24,8 +24,8 @@ export class CommodityController {
   @Get('list')
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
-  async list(@Param(ValidationPipe) params: CommodityListDTO): Promise<CommodityPageResDTO> {
-    const payload = getPayload<CommodityListDTO>(params, [
+  async list(@Query(ValidationPipe) query: CommodityListDTO): Promise<CommodityPageResDTO> {
+    const payload = getPayload(query, [
       'name',
       'categoryId',
       'author',
@@ -53,7 +53,7 @@ export class CommodityController {
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async update(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityUpdateDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const payload = getPayload<CommodityUpdateDTO>(body, [
+    const payload = getPayload(body, [
       'id',
       'name',
       'categoryId',

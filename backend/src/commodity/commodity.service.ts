@@ -33,8 +33,8 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
         category.name AS categoryName
       `
       )
-      .skip((page - 1) * pageSize)
-      .take(page * pageSize)
+      .offset((page - 1) * pageSize)
+      .limit(pageSize)
       .getRawMany()
     const total = await sql.getCount()
     return {
