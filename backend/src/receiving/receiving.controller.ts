@@ -1,11 +1,11 @@
 import { Controller, Post, Body, ValidationPipe, Get, Query, Param, Headers } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
-import { suc, fail } from 'src/utils/response'
+import { suc, fail } from 'src/common/utils/response'
 import { ReceivingService } from './receiving.service'
 import { UserService } from 'src/user/user.service'
 import { ReceivingResDTO, ReceivingPageResDTO, ReceivingAddDTO, ReceivingUpdateDTO } from './classes/receiving'
-import { BasePageDTO } from 'src/utils/base.dto'
-import { getPayload } from 'src/utils'
+import { BasePageDTO } from 'src/common/utils/base.dto'
+import { getPayload } from 'src/common/utils'
 
 @ApiTags('收货地址')
 @Controller('receiving')

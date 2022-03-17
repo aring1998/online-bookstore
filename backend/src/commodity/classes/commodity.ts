@@ -1,6 +1,8 @@
-import { IsNotEmpty, IsEnum } from 'class-validator'
+import { IsNotEmpty, IsEnum, IsNumber, IsOptional, IsDateString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/utils/base.dto'
+import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/common/utils/base.dto'
+import { DelFlagEnum } from 'src/common/enums/common.enums'
+import { $enum } from 'ts-enum-util'
 
 class CommodityBaseDTO {
   @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称' })
@@ -38,7 +40,7 @@ export class CommodityDTO extends CommodityBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
   id?: number
 
-  @ApiProperty({ enum: [0, 1], description: '失效标识', required: false })
+  @ApiProperty({ enum: $enum(DelFlagEnum).getValues(), description: '失效标识', required: false })
   @IsEnum({ Common: 0, Deleted: 1 })
   delFlag?: number
   
@@ -72,12 +74,17 @@ export class CommodityListDTO extends BasePageDTO {
   author: string
 
   @ApiProperty({ example: '1970-01-01', description: '出版日期开始时间', required: false })
+  @IsOptional()
+  @IsDateString()
   publicationTimeStart: string
 
   @ApiProperty({ example: '2022-12-31', description: '出版日期结束时间', required: false })
+  @IsOptional()
+  @IsDateString()
   publicationTimeEnd: string
 }
 export class CommodityUpdateDTO extends CommodityBaseDTO {
   @ApiProperty({ example: 1, description: 'id' })
+  @IsNumber()
   id: number
 }

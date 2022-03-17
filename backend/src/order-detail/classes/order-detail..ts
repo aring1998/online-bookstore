@@ -1,6 +1,8 @@
 import { IsEnum, IsNumber } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDataDTO } from 'src/utils/base.dto'
+import { BaseResDTO, BasePageDataDTO } from 'src/common/utils/base.dto'
+import { DelFlagEnum } from 'src/common/enums/common.enums'
+import { $enum } from 'ts-enum-util'
 
 class OrderDetailBaseDTO {
   @ApiProperty({ example: 4, description: '分类id' })
@@ -26,7 +28,7 @@ export class OrderDetailDTO extends OrderDetailBaseDTO {
   @ApiProperty({ example: 4, description: '分类id' })
   orderId?: number
 
-  @ApiProperty({ enum: [0, 1], description: '失效标识' })
+  @ApiProperty({ enum: $enum(DelFlagEnum).getValues(), description: '失效标识' })
   @IsEnum({ Common: 0, Deleted: 1 })
   delFlag?: number
 }

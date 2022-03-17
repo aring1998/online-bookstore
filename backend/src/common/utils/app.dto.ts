@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto';
+import { BaseResDTO, BasePageDTO } from 'src/common/utils/base.dto';
 
 class UploadDTO {
   @ApiProperty({ example: '1646726623796-图片名.png', description: '文件名' })

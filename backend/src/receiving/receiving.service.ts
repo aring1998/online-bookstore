@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Receiving } from 'src/entities/receiving.entity'
 import { ReceivingDTO, ReceivingPageData } from './classes/receiving'
-import { BaseSevice } from 'src/utils/base.service'
+import { BaseSevice } from 'src/common/utils/base.service'
 
 @Injectable()
 export class ReceivingService extends BaseSevice<ReceivingDTO> {

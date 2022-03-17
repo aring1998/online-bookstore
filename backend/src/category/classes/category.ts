@@ -1,6 +1,8 @@
-import { IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO } from 'src/utils/base.dto';
+import { BaseResDTO, BasePageDTO } from 'src/common/utils/base.dto';
+import { DelFlagEnum } from 'src/common/enums/common.enums';
+import { $enum } from 'ts-enum-util';
 
 export class CategoryDTO {
   @ApiProperty({ example: 1, description: 'id' })
@@ -9,7 +11,7 @@ export class CategoryDTO {
   @ApiProperty({ example: '名著', description: '分类名称' })
   name?: string
 
-  @ApiProperty({ enum: [0, 1], description: '失效标识' })
+  @ApiProperty({ enum: $enum(DelFlagEnum).getValues(), description: '失效标识' })
   @IsEnum({ Common: 0, Deleted: 1 })
   delFlag?: number
 }
@@ -44,6 +46,6 @@ export class CategoryListDTO extends BasePageDTO {
 
 export class CategoryUpdateDTO extends CategoryAddDTO {
   @ApiProperty({ example: 3, description: 'id' })
-  @IsNotEmpty({ message: 'id不能为空' })
+  @IsNumber()
   id: number
 }

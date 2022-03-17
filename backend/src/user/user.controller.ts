@@ -1,6 +1,6 @@
 import { Body, Controller, Post, ValidationPipe, Headers } from '@nestjs/common'
 import { UserService } from './user.service'
-import { suc, fail } from '../utils/response'
+import { suc, fail } from '../common/utils/response'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { UserResDTO, UserRegisterDTO, UserLoginDTO } from './classes/user'
 

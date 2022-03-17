@@ -1,10 +1,10 @@
 import { Controller, Post, Body, ValidationPipe, Param, Headers, Get, Query } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
-import { suc, fail } from 'src/utils/response'
+import { suc, fail } from 'src/common/utils/response'
 import { CategoryService } from './category.service'
 import { UserService } from 'src/user/user.service'
 import { CategoryResDTO, CategoryPageResDTO, CategoryAddDTO, CategoryListDTO, CategoryUpdateDTO } from './classes/category'
-import { getPayload } from 'src/utils'
+import { getPayload } from 'src/common/utils'
 
 @ApiTags('分类')
 @Controller('category')

@@ -1,6 +1,8 @@
-import { IsNotEmpty, IsOptional, IsEnum, Length } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsEnum, Length, IsEmail } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO } from 'src/utils/base.dto'
+import { BaseResDTO } from 'src/common/utils/base.dto'
+import { DelFlagEnum } from 'src/common/enums/common.enums'
+import { $enum } from 'ts-enum-util'
 
 export class UserDTO {
   @ApiProperty({ example: 1, description: 'id' })
@@ -16,7 +18,7 @@ export class UserDTO {
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱' })
   email?: string
 
-  @ApiProperty({ enum: [0, 1], description: '权限' })
+  @ApiProperty({ enum: $enum(DelFlagEnum).getValues(), description: '权限' })
   @IsEnum({ User: 0, Admin: 1 })
   auth?: number
 }
@@ -33,17 +35,19 @@ export class UserResDTO extends BaseResDTO {
 
 export class UserLoginDTO {
   @ApiProperty({ example: 'aring', description: '用户名/邮箱' })
-  @Length(4, 32)
   @IsNotEmpty()
+  @Length(4, 32)
   username: string
 
   @ApiProperty({ example: '02acc3bd456a37cdef2319c8cd9491a2', description: '密码(明文转换为md5传输)' })
-  @Length(6, 32)
   @IsNotEmpty()
+  @Length(6, 32)
   password: string
 }
 
 export class UserRegisterDTO extends UserLoginDTO {
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
+  @IsOptional()
+  @IsEmail()
   email?: string
 }

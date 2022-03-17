@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import { Commodity } from 'src/entities/commodity.entity'
 import { CommodityDTO, CommodityListDTO, CommodityPageData } from './classes/commodity'
 import { Category } from 'src/entities/category.entity'
-import { BaseSevice } from 'src/utils/base.service'
+import { BaseSevice } from 'src/common/utils/base.service'
 
 @Injectable()
 export class CommodityService extends BaseSevice<CommodityDTO> {

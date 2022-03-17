@@ -1,8 +1,8 @@
 import { Controller, Post, Body, ValidationPipe, Param, Headers, Get, Query } from '@nestjs/common'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
-import { suc, fail } from 'src/utils/response'
+import { suc, fail } from 'src/common/utils/response'
 import { CommodityService } from './commodity.service'
-import { getPayload } from 'src/utils'
+import { getPayload } from 'src/common/utils'
 import { UserService } from 'src/user/user.service'
 import { CommodityResDTO, CommodityPageResDTO, CommodityAddDTO, CommodityListDTO, CommodityUpdateDTO } from './classes/commodity'
 

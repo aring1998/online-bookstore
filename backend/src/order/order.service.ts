@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import { Order } from 'src/entities/order.entity'
 import { OrderDTO, OrderPageData } from './classes/order'
 import { User } from 'src/entities/user.entity'
-import { BaseSevice } from 'src/utils/base.service'
+import { BaseSevice } from 'src/common/utils/base.service'
 
 @Injectable()
 export class OrderService extends BaseSevice<OrderDTO> {

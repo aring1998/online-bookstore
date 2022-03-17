@@ -3,9 +3,9 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
 import { UserService } from 'src/user/user.service'
-import { suc, fail } from 'src/utils/response'
+import { suc, fail } from 'src/common/utils/response'
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger'
-import { UploadResDTO } from './utils/app.dto'
+import { UploadResDTO } from './common/utils/app.dto'
 
 @ApiTags('公共')
 @Controller()
