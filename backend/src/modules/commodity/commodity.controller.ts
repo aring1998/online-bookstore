@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/common/utils/response'
 import { CommodityService } from './commodity.service'
 import { getPayload } from 'src/common/utils'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/modules/user/user.service'
 import { CommodityResDTO, CommodityPageResDTO, CommodityAddDTO, CommodityListDTO, CommodityUpdateDTO } from './classes/commodity'
 
 @ApiTags('商品')

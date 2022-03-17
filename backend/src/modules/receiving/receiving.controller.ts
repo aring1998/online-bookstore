@@ -2,7 +2,7 @@ import { Controller, Post, Body, ValidationPipe, Get, Query, Param, Headers } fr
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/common/utils/response'
 import { ReceivingService } from './receiving.service'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/modules/user/user.service'
 import { ReceivingResDTO, ReceivingPageResDTO, ReceivingAddDTO, ReceivingUpdateDTO } from './classes/receiving'
 import { BasePageDTO } from 'src/common/utils/base.dto'
 import { getPayload } from 'src/common/utils'

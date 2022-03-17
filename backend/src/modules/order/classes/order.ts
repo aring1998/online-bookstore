@@ -2,7 +2,7 @@ import { IsEnum, IsNumber, IsArray, ArrayNotEmpty, ValidateNested, IsMobilePhone
 import { Type } from 'class-transformer'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/common/utils/base.dto'
-import { OrderDetailAddDTO } from 'src/order-detail/classes/order-detail.'
+import { OrderDetailAddDTO } from 'src/modules/order-detail/classes/order-detail.'
 import { $enum } from 'ts-enum-util'
 import { DelFlagEnum, OrderTypeEnum } from 'src/common/enums/common.enums'
 

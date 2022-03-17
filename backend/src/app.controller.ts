@@ -2,7 +2,7 @@ import { Controller, Post, UploadedFile, UseInterceptors, Headers } from '@nestj
 import { FileInterceptor } from '@nestjs/platform-express'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/modules/user/user.service'
 import { suc, fail } from 'src/common/utils/response'
 import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger'
 import { UploadResDTO } from './common/utils/app.dto'

@@ -3,12 +3,12 @@ import { Controller, Post, Body, ValidationPipe, Get, Param, Headers, Query } fr
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
 import { suc, fail } from 'src/common/utils/response'
 import { OrderService } from './order.service'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/modules/user/user.service'
 import { OrderResDTO, OrderPageResDTO, OrderAddDTO, OrderListDTO, OrderUpdateDTO } from './classes/order'
 import { BasePageDTO } from 'src/common/utils/base.dto'
 import { getPayload } from 'src/common/utils'
-import { OrderDetailService } from 'src/order-detail/order-detail.service'
-import { OrderDetailPageResDTO } from 'src/order-detail/classes/order-detail.'
+import { OrderDetailService } from 'src/modules/order-detail/order-detail.service'
+import { OrderDetailPageResDTO } from 'src/modules/order-detail/classes/order-detail.'
 
 @ApiTags('订单')
 @Controller('order')
