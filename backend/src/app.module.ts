@@ -14,9 +14,9 @@ import { CommodityModule } from './modules/commodity/commodity.module'
 import { OrderModule } from './modules/order/order.module'
 import { ReceivingModule } from './modules/receiving/receiving.module'
 import { OrderDetailModule } from './modules/order-detail/order-detail.module'
+import * as dotenv from 'dotenv'
 
-const dotenv = require('dotenv')
-dotenv.config('./env')
+dotenv.config()
 @Module({
   imports: [
     TypeOrmModule.forRoot({

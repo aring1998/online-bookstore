@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Headers } from '@nestjs/common'
+import { Controller, Post, UploadedFile, UseInterceptors, Headers, Get } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
@@ -11,6 +11,12 @@ import { UploadResDTO } from './common/utils/app.dto'
 @Controller()
 export class AppController {
   constructor(private readonly userService: UserService) {}
+  @Get()
+  @ApiOperation({ summary: '服务端首页' })
+  getHello() {
+    return `Hellow! Welcome to Online Bookstore API <br> <a href="http://81.68.189.158:3088/swagger">Read Swagger</a>`
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: '上传文件' })
