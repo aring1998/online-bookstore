@@ -21,6 +21,9 @@ export class UserDTO {
   @ApiProperty({ enum: $enum(DelFlagEnum).getValues(), description: '权限' })
   @IsEnum({ User: 0, Admin: 1 })
   auth?: number
+
+  @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '头像地址' })
+  profilePhotoUrl?: string
 }
 
 export class UserWholeDTO extends UserDTO {
@@ -50,4 +53,10 @@ export class UserRegisterDTO extends UserLoginDTO {
   @IsOptional()
   @IsEmail()
   email?: string
+}
+
+export class UserprofilePhotoUrlDTO {
+  @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '头像地址' })
+  @IsNotEmpty()
+  profilePhotoUrl?: string
 }

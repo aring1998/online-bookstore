@@ -15,6 +15,9 @@ export class User extends BaseEntity {
   email: string
 
   @Column({ default: null })
+  profilePhotoUrl: string
+
+  @Column({ default: null })
   token: string
 
   @Column({ default: 0 })

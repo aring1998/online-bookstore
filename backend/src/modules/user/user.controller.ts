@@ -2,12 +2,12 @@ import { Body, Controller, Post, ValidationPipe, Headers } from '@nestjs/common'
 import { UserService } from './user.service'
 import { suc, fail } from 'src/common/utils/response'
 import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger'
-import { UserResDTO, UserRegisterDTO, UserLoginDTO } from './classes/user'
+import { UserResDTO, UserRegisterDTO, UserLoginDTO, UserprofilePhotoUrlDTO } from './classes/user'
 
 @ApiTags('用户')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userSrvice: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post('register')
   @ApiOperation({ summary: '注册' })
@@ -15,13 +15,13 @@ export class UserController {
   async register(@Body(ValidationPipe) body: UserRegisterDTO): Promise<UserResDTO> {
     const { username, password, email } = body
 
-    const userInfo = await this.userSrvice.findOne({ username })
+    const userInfo = await this.userService.findOne({ username })
     if (userInfo) return fail('该用户名已被注册')
 
-    const emailInfo = await this.userSrvice.findOne({ email })
+    const emailInfo = await this.userService.findOne({ email })
     if (emailInfo && email) return fail('该邮箱已被使用')
 
-    const res = await this.userSrvice.save({
+    const res = await this.userService.save({
       username,
       password,
       email
@@ -36,10 +36,10 @@ export class UserController {
   async login(@Body(ValidationPipe) body: UserLoginDTO): Promise<UserResDTO> {
     const { username, password } = body
 
-    const userInfo = await this.userSrvice.findUser({ username })
+    const userInfo = await this.userService.findUser({ username })
     if (!userInfo) return fail('用户名不存在')
     if (userInfo.password !== password) return fail('密码错误')
-    const data = await this.userSrvice.updateToken({ id: userInfo.id })
+    const data = await this.userService.updateToken({ id: userInfo.id })
     return suc(data, '登录成功')
   }
 
@@ -47,8 +47,20 @@ export class UserController {
   @ApiOperation({ summary: '验证token' })
   @ApiResponse({ status: 0, type: UserResDTO })
   async token(@Headers('token') token: string): Promise<UserResDTO> {
-    const data = await this.userSrvice.findOne({ token })
+    const data = await this.userService.findOne({ token })
     if (!data) return fail('token已过期，请重新登录')
     return suc(data, `欢迎回来，${data.username}`)
+  }
+
+  @Post('profilePhoto')
+  @ApiOperation({ summary: '修改头像' })
+  @ApiResponse({ status: 0, type: UserResDTO })
+  async profilePhotoUrl(@Headers('token') token: string, @Body(ValidationPipe) body: UserprofilePhotoUrlDTO): Promise<UserResDTO> {
+    const userInfo = await this.userService.findOne({ token })
+    if (!userInfo) return fail('请先登录')
+    const { profilePhotoUrl } = body
+    if (!profilePhotoUrl.includes('81.68.189.158:86')) return fail('请发送正确的头像链接')
+    const data = await this.userService.update(userInfo.id, { profilePhotoUrl })
+    return suc(data, '修改头像成功')
   }
 }
