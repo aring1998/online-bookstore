@@ -9,7 +9,6 @@ export class UserDTO {
   id?: number
 
   @ApiProperty({ example: 'aring', description: '用户名' })
-  @IsOptional()
   username?: string
 
   @ApiProperty({ example: 'afa3b86e-dce0-4dbd-ad05-4422db248764', description: '令牌' })
@@ -55,8 +54,12 @@ export class UserRegisterDTO extends UserLoginDTO {
   email?: string
 }
 
-export class UserprofilePhotoUrlDTO {
+export class UserUpdateDTO {
+  @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
+  @IsOptional()
+  @IsEmail()
+  email?: string
+
   @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '头像地址' })
-  @IsNotEmpty()
   profilePhotoUrl?: string
 }
