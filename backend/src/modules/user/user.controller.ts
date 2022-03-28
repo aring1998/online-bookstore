@@ -60,6 +60,8 @@ export class UserController {
     const userInfo = await this.userService.findOne({ token })
     if (!userInfo) return fail('请先登录')
     const payload = getPayload(body, ['email', 'profilePhotoUrl'])
+    const emailInfo = await this.userService.findOne({ email: payload.email })
+    if (emailInfo && payload.email) return fail('该邮箱已被使用')
     if (payload.profilePhotoUrl && !payload.profilePhotoUrl.includes('81.68.189.158:86')) return fail('请发送正确的头像链接')
     const data = await this.userService.update(userInfo.id, payload)
     return suc(data, '修改成功')
