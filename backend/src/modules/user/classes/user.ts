@@ -21,7 +21,7 @@ export class UserDTO {
   @IsEnum({ User: 0, Admin: 1 })
   auth?: number
 
-  @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '头像地址' })
+  @ApiProperty({ example: 'https://source.aring.cc/upload/1646726623796-图片名.png', description: '头像地址' })
   profilePhotoUrl?: string
 }
 
@@ -60,6 +60,6 @@ export class UserUpdateDTO {
   @IsEmail()
   email?: string
 
-  @ApiProperty({ example: 'http://81.68.189.158:86/1646726623796-图片名.png', description: '头像地址' })
+  @ApiProperty({ example: 'https://source.aring.cc/upload/1646726623796-图片名.png', description: '头像地址' })
   profilePhotoUrl?: string
 }

@@ -33,7 +33,7 @@ class CommodityBaseDTO {
   @ApiProperty({ example: '该作讲述了···', description: '出版社', required: false })
   introduce?: string
 
-  @ApiProperty({ example: 'http://81.68.189.158:3088/public/TangShi300.png', description: '商品图片', required: false })
+  @ApiProperty({ example: 'https://source.aring.cc/upload/LBXPLJ.png', description: '商品图片', required: false })
   imgUrl?: string
 }
 export class CommodityDTO extends CommodityBaseDTO {

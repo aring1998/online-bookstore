@@ -14,7 +14,7 @@ export class AppController {
   @Get()
   @ApiOperation({ summary: '服务端首页' })
   getHello() {
-    return `Hellow! Welcome to Online Bookstore API <br> <a href="http://81.68.189.158:3088/swagger">Read Swagger</a>`
+    return `Hellow! Welcome to Online Bookstore API <br> <a href="https://online-bookstore.aring.cc/api">Read Swagger</a>`
   }
 
   @Post('upload')
@@ -26,12 +26,12 @@ export class AppController {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     if (!file) return fail('未接收到文件')
     const fileName = `${Date.now()}-${file.originalname}`
-    const writeFile = createWriteStream(join('C:', 'upload-files', fileName))
+    const writeFile = createWriteStream(join('/', 'home', 'aring', 'upload', fileName))
     writeFile.write(file.buffer)
     return suc(
       {
         fileName,
-        fileUrl: `http://81.68.189.158:86/${fileName}`,
+        fileUrl: `https://source.aring.cc/upload/${fileName}`,
         fileSize: file.size
       },
       '上传成功'
