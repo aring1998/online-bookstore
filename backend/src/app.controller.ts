@@ -14,7 +14,7 @@ export class AppController {
   @Get()
   @ApiOperation({ summary: '服务端首页' })
   getHello() {
-    return `Hellow! Welcome to Online Bookstore API <br> <a href="https://online-bookstore.aring.cc/api">Read Swagger</a>`
+    return `Hellow! Welcome to Online Bookstore API <br> <a href="https://online-bookstore.aring.cc/swagger/">Read Swagger</a>`
   }
 
   @Post('upload')

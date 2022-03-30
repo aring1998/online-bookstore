@@ -3,7 +3,7 @@
 ```
 !!!重要消息!!!
 服务已迁移，原接口`http://81.68.189.158:3088/`已迁移至
-`https://online-bookstore.aring.cc/api/`
+`https://online-bookstore.aring.cc/`
 原接口仍旧可用但不会再进行更新，并将在半年内停止服务(服务器过期)
 请及时更换接口!
 ```
@@ -25,7 +25,7 @@ root
 
 ## 🧨注意事项
 1. git提交日志请务必遵守[commitlint.config](/commitlint.config.js)内约定
-2. 查看[接口文档](https://online-bookstore.aring.cc)
+2. 查看[接口文档](https://online-bookstore.aring.cc/swagger)
 
 ## ✨前端项目推荐
 ### Inbook
