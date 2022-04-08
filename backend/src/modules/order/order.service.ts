@@ -41,8 +41,8 @@ export class OrderService extends BaseSevice<OrderDTO> {
     return {
       records,
       total,
-      page,
-      pageSize
+      page: Number(page),
+      pageSize: Number(pageSize)
     }
   }
 }

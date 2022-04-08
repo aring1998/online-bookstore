@@ -4,7 +4,14 @@ import { suc, fail } from 'src/common/utils/response'
 import { CommodityService } from './commodity.service'
 import { getPayload } from 'src/common/utils'
 import { UserService } from 'src/modules/user/user.service'
-import { CommodityResDTO, CommodityPageResDTO, CommodityAddDTO, CommodityListDTO, CommodityUpdateDTO } from './classes/commodity'
+import {
+  CommodityResDTO,
+  CommodityPageResDTO,
+  CommodityAddDTO,
+  CommodityListDTO,
+  CommodityUpdateDTO,
+  CommodityHotSalePageResDTO
+} from './classes/commodity'
 import { BasePageDTO } from 'src/common/utils/base.dto'
 
 @ApiTags('商品')
@@ -54,8 +61,8 @@ export class CommodityController {
 
   @Get('hotSale')
   @ApiOperation({ summary: '热销商品列表' })
-  @ApiResponse({ status: 0, type: CommodityResDTO })
-  async hotSale(@Query(ValidationPipe) query: BasePageDTO): Promise<CommodityResDTO> {
+  @ApiResponse({ status: 0, type: CommodityHotSalePageResDTO })
+  async hotSale(@Query(ValidationPipe) query: BasePageDTO): Promise<CommodityHotSalePageResDTO> {
     const payload = getPayload(query, ['page', 'pageSize'])
     const data = await this.commodityService.findHotSale({ ...payload })
     return suc(data, '')

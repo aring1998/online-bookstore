@@ -24,8 +24,8 @@ export class ReceivingService extends BaseSevice<ReceivingDTO> {
     return {
       records: res[0],
       total: res[1],
-      page,
-      pageSize
+      page: Number(page),
+      pageSize: Number(pageSize)
     }
   }
 }

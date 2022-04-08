@@ -52,6 +52,10 @@ export class CommodityResDTO extends BaseResDTO {
   @ApiProperty({ type: CommodityDTO, description: '商品信息' })
   data?: CommodityDTO
 }
+class CommodityHotSaleDTO extends CommodityDTO {
+  @ApiProperty({ example: 1, description: '下单数量', required: false })
+  commodityNum: number
+}
 
 export class CommodityPageData extends BasePageDataDTO {
   @ApiProperty({ type: [CommodityDTO] })
@@ -60,6 +64,14 @@ export class CommodityPageData extends BasePageDataDTO {
 export class CommodityPageResDTO extends BaseResDTO {
   @ApiProperty({ type: CommodityPageData, description: '分页数据' })
   data?: CommodityPageData
+}
+export class CommodityHotSalePageData extends BasePageDataDTO {
+  @ApiProperty({ type: [CommodityHotSaleDTO] })
+  records: CommodityHotSaleDTO[]
+}
+export class CommodityHotSalePageResDTO extends BaseResDTO {
+  @ApiProperty({ type: CommodityHotSalePageData, description: '分页数据' })
+  data?: CommodityHotSalePageData
 }
 
 export class CommodityAddDTO extends CommodityBaseDTO {}

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Commodity } from 'src/entities/commodity.entity'
-import { CommodityDTO, CommodityListDTO, CommodityPageData } from './classes/commodity'
+import { CommodityDTO, CommodityHotSalePageData, CommodityListDTO, CommodityPageData } from './classes/commodity'
 import { Category } from 'src/entities/category.entity'
 import { BaseSevice } from 'src/common/utils/base.service'
+import { BasePageDTO } from 'src/common/utils/base.dto'
 
 @Injectable()
 export class CommodityService extends BaseSevice<CommodityDTO> {
@@ -40,21 +41,31 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
     return {
       records,
       total,
-      page,
-      pageSize
+      page: Number(page),
+      pageSize: Number(pageSize)
     }
   }
 
-  async findHotSale(option: { page: number; pageSize: number }): Promise<CommodityDTO> {
+  async findHotSale(option: BasePageDTO): Promise<CommodityHotSalePageData> {
     const { page = 1, pageSize = 200 } = option
-    return await this.CommodityRepository.query(`
+    const sql = `
       SELECT a.*, b.commodityNum FROM commodity a
       LEFT JOIN (
         SELECT commodityId, SUM( commodityNum ) commodityNum FROM \`order_detail\` GROUP BY commodityId 
       ) b ON a.id = b.commodityId 
       ORDER BY commodityNum DESC
+    `
+    const records = await this.CommodityRepository.query(`
+      ${sql}
       LIMIT ${pageSize}
       OFFSET ${page - 1}
     `)
+    const total = await this.CommodityRepository.query(sql)
+    return {
+      records,
+      total: total.length,
+      page: Number(page),
+      pageSize: Number(pageSize)
+    }
   }
 }
