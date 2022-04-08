@@ -44,4 +44,17 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
       pageSize
     }
   }
+
+  async findHotSale(option: { page: number; pageSize: number }): Promise<CommodityDTO> {
+    const { page = 1, pageSize = 200 } = option
+    return await this.CommodityRepository.query(`
+      SELECT a.*, b.commodityNum FROM commodity a
+      LEFT JOIN (
+        SELECT commodityId, SUM( commodityNum ) commodityNum FROM \`order_detail\` GROUP BY commodityId 
+      ) b ON a.id = b.commodityId 
+      ORDER BY commodityNum DESC
+      LIMIT ${pageSize}
+      OFFSET ${page - 1}
+    `)
+  }
 }

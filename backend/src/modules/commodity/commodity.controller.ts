@@ -5,6 +5,7 @@ import { CommodityService } from './commodity.service'
 import { getPayload } from 'src/common/utils'
 import { UserService } from 'src/modules/user/user.service'
 import { CommodityResDTO, CommodityPageResDTO, CommodityAddDTO, CommodityListDTO, CommodityUpdateDTO } from './classes/commodity'
+import { BasePageDTO } from 'src/common/utils/base.dto'
 
 @ApiTags('商品')
 @Controller('commodity')
@@ -25,15 +26,7 @@ export class CommodityController {
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
   async list(@Query(ValidationPipe) query: CommodityListDTO): Promise<CommodityPageResDTO> {
-    const payload = getPayload(query, [
-      'name',
-      'categoryId',
-      'author',
-      'page',
-      'pageSize',
-      'publicationTimeStart',
-      'publicationTimeEnd'
-    ])
+    const payload = getPayload(query, ['name', 'categoryId', 'author', 'page', 'pageSize', 'publicationTimeStart', 'publicationTimeEnd'])
     const data = await this.commodityService.findByPage({ ...payload })
     return suc(data, '')
   }
@@ -53,20 +46,18 @@ export class CommodityController {
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async update(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityUpdateDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const payload = getPayload(body, [
-      'id',
-      'name',
-      'categoryId',
-      'price',
-      'author',
-      'press',
-      'publicationTime',
-      'words',
-      'introduce',
-      'imgUrl'
-    ])
+    const payload = getPayload(body, ['id', 'name', 'categoryId', 'price', 'author', 'press', 'publicationTime', 'words', 'introduce', 'imgUrl'])
     if (!payload.id) return fail('id不可为空')
     const data = await this.commodityService.update<CommodityUpdateDTO>(payload.id, payload)
     return suc(data, '修改成功')
+  }
+
+  @Get('hotSale')
+  @ApiOperation({ summary: '热销商品列表' })
+  @ApiResponse({ status: 0, type: CommodityResDTO })
+  async hotSale(@Query(ValidationPipe) query: BasePageDTO): Promise<CommodityResDTO> {
+    const payload = getPayload(query, ['page', 'pageSize'])
+    const data = await this.commodityService.findHotSale({ ...payload })
+    return suc(data, '')
   }
 }
