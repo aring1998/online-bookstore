@@ -58,7 +58,7 @@ export class CommodityService extends BaseSevice<CommodityDTO> {
     const records = await this.CommodityRepository.query(`
       ${sql}
       LIMIT ${pageSize}
-      OFFSET ${page - 1}
+      OFFSET ${(page - 1) * pageSize}
     `)
     const total = await this.CommodityRepository.query(sql)
     return {
