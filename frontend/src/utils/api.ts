@@ -10,8 +10,7 @@ interface Res<T> {
 
 // 创建axios实例
 const instance = axios.create({
-  // baseURL: 'https://online-bookstore.aring.cc/api/',
-  baseURL: 'http://localhost:3088/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 30000,
   validateStatus: status => {
     // 允许返回所有状态码，不会遇到错误就停止
@@ -44,10 +43,12 @@ instance.interceptors.response.use((res: AxiosResponse) => {
 const api = {
   async get<T, K>(url: string, params?: T): Promise<Res<K>> {
     const res = await instance.get<Res<K>>(url, { params })
+    if (res?.data?.code !== 0) throw new Error(res?.data?.message)
     return res.data
   },
   async post<T, K>(url: string, data?: T): Promise<Res<K>> {
     const res = await instance.post(url, data)
+    if (res?.data?.code !== 0) throw new Error(res?.data?.message)
     return res.data
   }
 }
