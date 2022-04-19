@@ -1,0 +1,56 @@
+@import './normalize.scss';
+
+html {
+  color: #333;
+}
+
+[v-clock] {
+  display: none !important;
+}
+a {
+  color: #2B87D1CC;
+  text-decoration: none;
+  &:hover {
+    color: #2B87D1;
+  }
+}
+button:focus {
+  outline: 0;
+}
+
+.form-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+  width: 100%;
+}
+
+.el-tabs {
+  .el-tabs__item {
+    font-size: 18px;
+  }
+}
+ .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+ .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+.el-image-viewer__mask {
+  z-index: 2200;
+}

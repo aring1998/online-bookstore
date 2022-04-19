@@ -1,27 +1,30 @@
 {
-  "name": "programmerinterviewdictionary",
-  "version": "0.1.0",
+  "name": "online-bookstore-frontend",
   "private": true,
+  "version": "0.0.1",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "@types/moment": "^2.13.0",
+    "axios": "^0.26.1",
+    "element-plus": "^2.1.9",
+    "path": "^0.12.7",
+    "pinia": "^2.0.13",
+    "ts-md5": "^1.2.11",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.15",
-    "@vue/cli-plugin-router": "~4.5.15",
-    "@vue/cli-plugin-vuex": "~4.5.15",
-    "@vue/cli-service": "~4.5.15",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "@types/node": "^17.0.23",
+    "@vitejs/plugin-vue": "^2.3.0",
+    "node-sass": "^7.0.1",
+    "sass": "^1.50.0",
+    "sass-loader": "^12.6.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.0",
+    "vue-tsc": "^0.29.8"
+  }
 }

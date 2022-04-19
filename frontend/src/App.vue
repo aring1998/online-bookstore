@@ -1,32 +1,20 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { AccountApiRes } from './components/top-bar/components/types/account'
+import TopBar from './components/top-bar/TopBar.vue'
+import useStore from './store'
+import api from './utils/api'
+onMounted(async () => {
+  const { data } = await api.post<null, AccountApiRes>('user/token')
+  useStore().user().userInfo = data
+})
+</script>
+
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <top-bar></top-bar>
+  <router-view></router-view>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+<style lang="scss">
+@import './assets/styles/index.scss';
 </style>
