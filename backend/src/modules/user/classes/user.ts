@@ -49,8 +49,6 @@ export class UserLoginDTO {
 
 export class UserRegisterDTO extends UserLoginDTO {
   @ApiProperty({ example: '1303340995@qq.com', description: '邮箱', required: false })
-  @IsOptional()
-  @IsEmail()
   email?: string
 }
 

@@ -19,7 +19,7 @@ export class ReceivingService extends BaseSevice<ReceivingDTO> {
     const res = await this.ReceivingRepository.createQueryBuilder()
       .where({ ...where })
       .skip((page - 1) * pageSize)
-      .take(page * pageSize)
+      .take(pageSize)
       .getManyAndCount()
     return {
       records: res[0],

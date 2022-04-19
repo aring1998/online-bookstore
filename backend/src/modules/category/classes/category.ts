@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO, BasePageDTO } from 'src/common/utils/base.dto';
+import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/common/utils/base.dto';
 import { DelFlagEnum } from 'src/common/enums/common.enums';
 import { $enum } from 'ts-enum-util';
 
@@ -21,11 +21,9 @@ export class CategoryResDTO extends BaseResDTO {
   data?: CategoryDTO
 }
 
-class CategoryPageData {
+export class CategoryPageData extends BasePageDataDTO {
   @ApiProperty({ type: [CategoryDTO] })
-  data: CategoryDTO[]
-  @ApiProperty({ example: 1, description: '数据总数' })
-  count: number
+  records: CategoryDTO[]
 }
 
 export class CategoryPageResDTO extends BaseResDTO {
