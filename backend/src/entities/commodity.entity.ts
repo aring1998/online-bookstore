@@ -11,7 +11,7 @@ export class Commodity extends BaseEntity {
   @Column()
   categoryId: number
 
-  @Column()
+  @Column({ type: 'double' })
   price: number
 
   @Column()
@@ -20,7 +20,7 @@ export class Commodity extends BaseEntity {
   @Column({ default: null })
   press: string
 
-  @Column({ default: null })
+  @Column({ type: 'datetime', default: null })
   publicationTime: string
 
   @Column({ default: null })

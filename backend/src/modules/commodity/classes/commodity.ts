@@ -25,15 +25,18 @@ class CommodityBaseDTO {
   press?: string
 
   @ApiProperty({ example: '2022-03-03', description: '出版时间', required: false })
+  @IsOptional()
+  @IsDateString()
   publicationTime?: string
 
   @ApiProperty({ example: 1200000, description: '字数', required: false })
   words?: number
 
-  @ApiProperty({ example: '该作讲述了···', description: '出版社', required: false })
+  @ApiProperty({ example: '该作讲述了···', description: '介绍', required: false })
   introduce?: string
 
-  @ApiProperty({ example: 'https://source.aring.cc/upload/LBXPLJ.png', description: '商品图片', required: false })
+  @ApiProperty({ example: 'https://source.aring.cc/upload/LBXPLJ.png', description: '商品图片' })
+  @IsNotEmpty()
   imgUrl?: string
 }
 export class CommodityDTO extends CommodityBaseDTO {

@@ -24,7 +24,7 @@ export class CommodityController {
   @ApiResponse({ status: 0, type: CommodityResDTO })
   async add(@Headers('token') token: string, @Body(ValidationPipe) body: CommodityAddDTO): Promise<CommodityResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
-    const payload = getPayload(body, ['name', 'price', 'author', 'categoryId'])
+    const payload = getPayload(body, ['name', 'price', 'author', 'categoryId', 'words', 'press', 'publicationTime', 'imgUrl', 'introduce'])
     const data = await this.commodityService.save({ ...payload })
     return suc(data, '添加商品成功')
   }
