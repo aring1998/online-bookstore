@@ -3,6 +3,7 @@ import api from '@/utils/api'
 import { FormInstance } from 'element-plus'
 import { onMounted, reactive, Ref, ref } from 'vue'
 import { CategoryDTO, CategoryListApiRes, CategoryAddApiParams } from './types/category'
+import useStore from '@/store';
 
 const actFormRef = ref()
 const visiable = ref(false)
@@ -71,7 +72,7 @@ onMounted(() => {
   <div class="action-btn">
     <el-button type="primary" @click="showDialog('新增')">新增</el-button>
   </div>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table :data="tableData" style="width: 100%;" height="calc(100vh - 260px)" max-height="calc(100vh - 260px)" v-loading="useStore().loading">
     <el-table-column prop="id" label="id" />
     <el-table-column prop="name" label="分类名" />
     <el-table-column label="操作">

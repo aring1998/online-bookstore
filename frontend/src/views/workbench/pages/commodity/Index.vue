@@ -3,7 +3,7 @@ import api from '@/utils/api'
 import { ElMessage, FormInstance } from 'element-plus'
 import { onMounted, reactive, Ref, ref } from 'vue'
 import { CategoryDTO, CategoryListApiRes } from '../category/types/category'
-import { CommodityDTO, CommodityApiRes } from './types/commodity'
+import { CommodityDTO, CommodityApiRes, CommodityListApiParams } from './types/commodity'
 import { Plus } from '@element-plus/icons-vue'
 import useStore from '@/store'
 import { UploadApiRes } from '@/types/upload'
@@ -15,7 +15,7 @@ const dialogName = ref('新增')
 const currentRow: Ref<CommodityDTO> = ref({})
 const actForm: Ref<CommodityDTO> = ref({
   name: '',
-  categoryId: 1,
+  categoryId: '',
   price: 0,
   author: '',
   press: '',
@@ -37,7 +37,10 @@ function showDialog(name: string, row?: CommodityDTO) {
   }
 }
 const sechForm = reactive({
-  name: ''
+  name: '',
+  categoryId: '',
+  author: '',
+  date: undefined
 })
 const pagination = reactive({
   page: 1,
@@ -45,8 +48,10 @@ const pagination = reactive({
   total: 0
 })
 async function search() {
-  const { data } = await api.get<CommodityDTO, CommodityApiRes>('commodity/list', {
+  const { data } = await api.get<CommodityListApiParams, CommodityApiRes>('commodity/list', {
     ...sechForm,
+    publicationTimeStart: sechForm.date ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
+    publicationTimeEnd: sechForm.date ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
     ...pagination
   })
   tableData.value = data.records
@@ -88,8 +93,19 @@ onMounted(async () => {
 
 <template>
   <el-form :model="sechForm" label-width="70px" style="width: 100%" @submit.native.prevent :inline="true">
-    <el-form-item label="分类名" prop="name">
-      <el-input v-model="sechForm.name" @keydown.enter="search"></el-input>
+    <el-form-item label="商品名">
+      <el-input v-model="sechForm.name"></el-input>
+    </el-form-item>
+    <el-form-item label="分类">
+      <el-select v-model="sechForm.categoryId" clearable>
+        <el-option v-for="item in categoryOptions" :key="item.id" :label="item.name" :value="item.id!" />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="作者">
+      <el-input v-model="sechForm.author"></el-input>
+    </el-form-item>
+    <el-form-item label="出版日期">
+      <el-date-picker v-model="sechForm.date" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="search">查询</el-button>
@@ -98,7 +114,7 @@ onMounted(async () => {
   <div class="action-btn">
     <el-button type="primary" @click="showDialog('新增')">新增</el-button>
   </div>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table :data="tableData" style="width: 100%" height="calc(100vh - 310px)" max-height="calc(100vh - 310px)" v-loading="useStore().loading">
     <el-table-column prop="id" label="id" width="40" />
     <el-table-column label="商品图片" width="150">
       <template #default="scope">
@@ -115,10 +131,14 @@ onMounted(async () => {
     <el-table-column prop="price" label="价格" width="80" />
     <el-table-column prop="author" label="作者" width="140" />
     <el-table-column prop="press" label="出版社" width="200" />
-    <el-table-column prop="publicationTime" label="出版时间" width="140" :formatter="val => moment(val).format('YYYY-MM-DD')" />
+    <el-table-column
+      prop="publicationTime"
+      label="出版时间"
+      width="140"
+      :formatter="val => (val.publicationTime ? moment(val.publicationTime).format('YYYY-MM-DD') : '')"
+    />
     <el-table-column prop="words" label="字数" width="120" />
     <el-table-column prop="introduce" label="介绍" width="200" show-overflow-tooltip />
-    <!-- <el-table-column prop="imgUrl" label="商品图片" /> -->
     <el-table-column label="操作" fixed="right">
       <template #default="scope">
         <el-button size="small" @click="showDialog('编辑', scope.row)">编辑</el-button>

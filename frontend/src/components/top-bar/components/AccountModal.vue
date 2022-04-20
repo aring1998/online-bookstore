@@ -16,8 +16,8 @@ const props = defineProps({
 })
 const loginFormRef = ref<FormInstance>()
 const loginForm = reactive({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: '123456'
 })
 const loginFormRules = reactive({
   username: [
@@ -70,13 +70,14 @@ async function register(FormEl: FormInstance) {
 
 function success(data: AccountApiRes) {
   useStore().user().userInfo = data
+  useStore().user().token = data.token
   emits('show')
   localStorage.setItem('token', data.token)
 }
 </script>
 
 <template>
-  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw">
+  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw" v-loading="useStore().loading">
     <div class="account-wrap">
       <div class="account-bar">
         <span :class="{ active: !active }" @click="active = 0">登录</span>

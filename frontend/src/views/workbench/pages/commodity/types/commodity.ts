@@ -3,7 +3,7 @@ import { BasePageRes } from "@/utils/types"
 export interface CommodityDTO {
   id?: number
   name?: string
-  categoryId?: number
+  categoryId?: number | string
   price?: number
   author?: string
   press?: string
@@ -15,4 +15,9 @@ export interface CommodityDTO {
 
 export interface CommodityApiRes extends BasePageRes {
   records: CommodityDTO[]
+}
+
+export interface CommodityListApiParams extends CommodityDTO {
+  publicationTimeStart?: string
+  publicationTimeEnd?: string
 }

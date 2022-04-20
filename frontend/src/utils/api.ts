@@ -20,6 +20,7 @@ const instance = axios.create({
 
 // 请求拦截
 instance.interceptors.request.use((config: AxiosRequestConfig) => {
+  store().loading = true
   config.headers && (config.headers.token = store().user().token)
   return config
 }),
@@ -28,6 +29,7 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
   }
 // 响应拦截
 instance.interceptors.response.use((res: AxiosResponse) => {
+  store().loading = false
   if (res.status < 200 || res.status > 400) return ElMessage.error(`网络请求错误，错误：${res.statusText}`)
   if (res.data.code !== 0) ElMessage.error(res.data.message)
   else {
