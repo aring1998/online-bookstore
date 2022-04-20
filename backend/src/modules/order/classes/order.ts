@@ -82,8 +82,6 @@ export class OrderListDTO extends BasePageDTO {
   consignee: string
 
   @ApiProperty({ example: 350000, description: '收货地区', required: false })
-  @IsOptional()
-  @IsNumber()
   receiveAddressCode: number
 
   @ApiProperty({ example: '1970-01-01', description: '下单开始时间', required: false })

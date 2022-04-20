@@ -17,7 +17,7 @@ export class OrderDetail extends BaseEntity {
   @Column()
   commodityNum: number
 
-  @Column()
+  @Column({ type: 'double' })
   commodityPrice: number
 
   @Column({ default: 0 })

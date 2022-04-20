@@ -79,10 +79,10 @@ export class CommodityHotSalePageResDTO extends BaseResDTO {
 
 export class CommodityAddDTO extends CommodityBaseDTO {}
 export class CommodityListDTO extends BasePageDTO {
-  @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称' })
+  @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称', required: false })
   name: string
 
-  @ApiProperty({ example: 1, description: '分类id' })
+  @ApiProperty({ example: 1, description: '分类id', required: false })
   categoryId: number
 
   @ApiProperty({ example: '丹尼尔·笛福', description: '作者', required: false })
