@@ -66,7 +66,7 @@ onMounted(() => {
     </div>
     <div class="hot-sale">
       <h2>热销书刊</h2>
-      <div class="book-list" v-loading="useStore().loading">
+      <div class="book-list" v-loading="useStore().common().loading">
         <el-icon @click="prePage"><arrow-left-bold /></el-icon>
         <el-icon @click="nextPage"><arrow-right-bold /></el-icon>
         <div class="item" v-for="item of hotSale" :key="item.id">

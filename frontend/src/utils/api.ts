@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import store from '@/store'
+import useStore from '@/store'
 import { ElMessage } from 'element-plus'
 
 interface Res<T> {
@@ -20,8 +20,8 @@ const instance = axios.create({
 
 // 请求拦截
 instance.interceptors.request.use((config: AxiosRequestConfig) => {
-  store().loading = true
-  config.headers && (config.headers.token = store().user().token)
+  useStore().common().loading = true
+  config.headers && (config.headers.token = useStore().user().token)
   return config
 }),
   (err: AxiosError) => {
@@ -29,9 +29,9 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
   }
 // 响应拦截
 instance.interceptors.response.use((res: AxiosResponse) => {
-  store().loading = false
+  useStore().common().loading = false
   if (res.status < 200 || res.status > 400) return ElMessage.error(`网络请求错误，错误：${res.statusText}`)
-  if (res.data.code !== 0) ElMessage.error(res.data.message)
+  if (res.data.code !== 0) ElMessage.error(res.data.message || '网络请求错误')
   else {
     if (res.data.message) ElMessage.success(res.data.message)
   }

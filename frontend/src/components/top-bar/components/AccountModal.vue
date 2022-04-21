@@ -77,7 +77,7 @@ function success(data: AccountApiRes) {
 </script>
 
 <template>
-  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw" v-loading="useStore().loading">
+  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw" v-loading="useStore().common().loading">
     <div class="account-wrap">
       <div class="account-bar">
         <span :class="{ active: !active }" @click="active = 0">登录</span>

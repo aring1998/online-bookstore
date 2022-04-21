@@ -108,7 +108,7 @@ onMounted(async () => {
       <el-button type="primary" @click="search">查询</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" style="width: 100%" height="calc(100vh - 280px)" max-height="calc(100vh - 280px)" v-loading="useStore().loading">
+  <el-table :data="tableData" style="width: 100%" height="calc(100vh - 280px)" max-height="calc(100vh - 280px)" v-loading="useStore().common().loading">
     <el-table-column prop="id" label="id" width="40" />
     <el-table-column prop="username" label="下单用户" width="80" />
     <el-table-column prop="consignee" label="收货人" width="80" />

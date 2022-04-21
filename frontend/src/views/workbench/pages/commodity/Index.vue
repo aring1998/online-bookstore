@@ -114,7 +114,7 @@ onMounted(async () => {
   <div class="action-btn">
     <el-button type="primary" @click="showDialog('新增')">新增</el-button>
   </div>
-  <el-table :data="tableData" style="width: 100%" height="calc(100vh - 310px)" max-height="calc(100vh - 310px)" v-loading="useStore().loading">
+  <el-table :data="tableData" style="width: 100%" height="calc(100vh - 310px)" max-height="calc(100vh - 310px)" v-loading="useStore().common().loading">
     <el-table-column prop="id" label="id" width="40" />
     <el-table-column label="商品图片" width="150">
       <template #default="scope">
@@ -163,7 +163,7 @@ onMounted(async () => {
       }
     "
   ></el-pagination>
-  <el-dialog v-model="visiable" :title="dialogName">
+  <el-dialog v-model="visiable" :title="dialogName" v-loading="useStore().common().loading">
     <div class="actForm-wrap">
       <el-form :model="actForm" :rules="formRules" label-width="70px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
         <el-form-item label="商品名" prop="name">
@@ -201,6 +201,7 @@ onMounted(async () => {
             }"
             :show-file-list="false"
             :on-success="uploadSuccess"
+            accept=".jpg, .jpeg, .png, .gif"
           >
             <img v-if="actForm.imgUrl" :src="actForm.imgUrl" class="avatar" style="height: 178px; width: 178px" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
