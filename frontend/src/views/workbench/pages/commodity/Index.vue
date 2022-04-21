@@ -187,7 +187,7 @@ onMounted(async () => {
           <el-date-picker v-model="actForm.publicationTime" type="date" />
         </el-form-item>
         <el-form-item label="字数" prop="words">
-          <el-input-number v-model="actForm.price" :precision="0" :step="1000" />
+          <el-input-number v-model="actForm.words" :precision="0" :step="1000" />
         </el-form-item>
         <el-form-item label="介绍" prop="introduce">
           <el-input v-model="actForm.introduce" autosize type="textarea"></el-input>

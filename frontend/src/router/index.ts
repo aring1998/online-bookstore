@@ -9,6 +9,14 @@ const routes: RouteRecordRaw[] = [
     redirect: '/home'
   },
   {
+    path: '/:pathMatch(.*)',
+    redirect: '/404'
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404/Index.vue')
+  },
+  {
     path: '/home',
     component: () => import('@/views/home/Index.vue')
   },

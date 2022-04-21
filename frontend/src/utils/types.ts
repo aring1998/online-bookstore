@@ -3,3 +3,8 @@ export interface BasePageRes {
   page: number,
   pageSize: number
 }
+
+export interface BasePageParams {
+  page: number
+  pageSize: number
+}

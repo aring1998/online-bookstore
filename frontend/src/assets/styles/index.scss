@@ -18,6 +18,10 @@ button:focus {
   outline: 0;
 }
 
+.base-wrap {
+  width: $max-width;
+  margin: 0 auto;
+}
 .form-wrap {
   display: flex;
   justify-content: center;
