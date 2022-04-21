@@ -7,6 +7,7 @@ const accountShow = ref(false)
 const { user } = useStore()
 function logout() {
   user().userInfo = null
+  localStorage.removeItem('token')
   ElMessage.success('退出成功')
 }
 </script>

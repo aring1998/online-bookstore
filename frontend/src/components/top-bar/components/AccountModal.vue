@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import api from '@/utils/api'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { Md5 } from 'ts-md5'
 import useStore from '@/store'
 import { LoginApiParams, RegisterApiParams, AccountApiRes } from './types/account'
@@ -74,11 +74,21 @@ function success(data: AccountApiRes) {
   emits('show')
   localStorage.setItem('token', data.token)
 }
+
+watch(props, (val) => {
+  if (val.visiable) {
+    document.documentElement.onkeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && !active.value) {
+        login(loginFormRef.value!)
+      }
+    }
+  } else document.documentElement.onkeydown = null
+})
 </script>
 
 <template>
-  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw" v-loading="useStore().common().loading">
-    <div class="account-wrap">
+  <el-dialog v-model="visiable" v-bind="$attrs" width="30vw">
+    <div class="account-wrap" v-loading="useStore().common().loading">
       <div class="account-bar">
         <span :class="{ active: !active }" @click="active = 0">登录</span>
         <span> / </span>
@@ -92,7 +102,7 @@ function success(data: AccountApiRes) {
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 120px" @click="login(loginFormRef)">登 录</el-button>
+          <el-button type="primary" style="width: 120px">登 录</el-button>
         </el-form-item>
       </el-form>
       <el-form :model="registerForm" :rules="registerFormRules" label-width="70px" v-show="active" ref="registerFormRef">

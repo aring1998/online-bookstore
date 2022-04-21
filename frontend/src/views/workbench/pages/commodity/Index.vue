@@ -163,8 +163,8 @@ onMounted(async () => {
       }
     "
   ></el-pagination>
-  <el-dialog v-model="visiable" :title="dialogName" v-loading="useStore().common().loading">
-    <div class="actForm-wrap">
+  <el-dialog v-model="visiable" :title="dialogName">
+    <div class="actForm-wrap" v-loading="useStore().common().loading">
       <el-form :model="actForm" :rules="formRules" label-width="70px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
         <el-form-item label="商品名" prop="name">
           <el-input v-model="actForm.name"></el-input>

@@ -28,7 +28,7 @@ export class UserController {
       email
     })
     const { ...data } = res
-    return suc(data, '注册成功')
+    return suc(data, '注册成功，已为您自动登录')
   }
 
   @Post('login')
