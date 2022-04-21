@@ -6,8 +6,13 @@ import FooterBar from './components/footer-bar/FooterBar.vue';
 import useStore from './store'
 import api from './utils/api'
 onMounted(async () => {
-  const { data } = await api.post<null, AccountApiRes>('user/token')
-  useStore().user().userInfo = data
+  try {
+    if (!localStorage.getItem('token')) return
+    const { data } = await api.post<null, AccountApiRes>('user/token')
+    useStore().user().userInfo = data
+  } catch {
+    localStorage.removeItem('token')
+  }
 })
 </script>
 
