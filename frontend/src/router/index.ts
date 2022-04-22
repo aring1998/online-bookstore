@@ -1,8 +1,6 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  type RouteRecordRaw,
-} from 'vue-router'
+import useStore from '@/store'
+import { ElMessage } from 'element-plus'
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -42,7 +40,7 @@ const routes: RouteRecordRaw[] = [
 ]
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes
 })
 
 export default router

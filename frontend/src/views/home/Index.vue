@@ -112,6 +112,11 @@ onMounted(() => {
       display: flex;
       flex-flow: column nowrap;
       cursor: pointer;
+      &:hover {
+        span {
+          text-decoration: underline;
+        }
+      }
       span {
         text-align: center;
       }

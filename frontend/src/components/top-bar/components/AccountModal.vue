@@ -102,7 +102,7 @@ watch(props, (val) => {
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 120px">登 录</el-button>
+          <el-button type="primary" style="width: 120px" @click="login(loginFormRef)">登 录</el-button>
         </el-form-item>
       </el-form>
       <el-form :model="registerForm" :rules="registerFormRules" label-width="70px" v-show="active" ref="registerFormRef">
