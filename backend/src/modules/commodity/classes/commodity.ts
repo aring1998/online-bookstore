@@ -79,6 +79,9 @@ export class CommodityHotSalePageResDTO extends BaseResDTO {
 
 export class CommodityAddDTO extends CommodityBaseDTO {}
 export class CommodityListDTO extends BasePageDTO {
+  @ApiProperty({ example: 1, description: '商品id', required: false })
+  id: number
+
   @ApiProperty({ example: '鲁滨逊漂流记', description: '商品名称', required: false })
   name: string
 

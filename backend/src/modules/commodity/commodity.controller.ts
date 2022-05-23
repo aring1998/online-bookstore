@@ -33,7 +33,7 @@ export class CommodityController {
   @ApiOperation({ summary: '商品列表' })
   @ApiResponse({ status: 0, type: CommodityPageResDTO })
   async list(@Query(ValidationPipe) query: CommodityListDTO): Promise<CommodityPageResDTO> {
-    const payload = getPayload(query, ['name', 'categoryId', 'author', 'page', 'pageSize', 'publicationTimeStart', 'publicationTimeEnd'])
+    const payload = getPayload(query, ['id', 'name', 'categoryId', 'author', 'page', 'pageSize', 'publicationTimeStart', 'publicationTimeEnd'])
     const data = await this.commodityService.findByPage({ ...payload })
     return suc(data, '')
   }
