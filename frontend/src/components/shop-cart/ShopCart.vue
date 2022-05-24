@@ -33,7 +33,7 @@ watch(
               </div>
             </div>
             <div class="num">
-              <el-input-number v-model="item.num" :min="1" :max="99" :precision="0" size="small" @change="nextTick(() => (badge = ''))" />
+              <el-input-number v-model="item.num" :min="1" :max="99" :precision="0" size="small" @change="nextTick(() => (badgeHide = true))" />
             </div>
           </div>
           <div class="act-btn">
