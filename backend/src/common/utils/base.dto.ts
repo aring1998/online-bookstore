@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsNumberString, IsOptional, IsPositive, MaxLength, MinLength, NotContains } from 'class-validator';
 export class BaseResDTO {
   @ApiProperty({ example: 0, description: '校验码' })
   code: number
@@ -11,9 +12,19 @@ export class BaseResDTO {
 
 export class BasePageDTO {
   @ApiProperty({ example: 1, description: '页码', required: false, default: 1 })
+  @IsOptional()
+  @IsNumberString()
+  @NotContains('-')
+  @MinLength(1)
+  @MaxLength(3)
   page: number
 
   @ApiProperty({ example: 30, description: '每页数量', required: false, default: 200 })
+  @IsOptional()
+  @IsNumberString()
+  @NotContains('-')
+  @MinLength(1)
+  @MaxLength(3)
   pageSize: number
 }
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum, IsNumber, IsOptional, IsDateString } from 'class-validator'
+import { IsNotEmpty, IsEnum, IsNumber, IsOptional, IsDateString, Max } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { BaseResDTO, BasePageDTO, BasePageDataDTO } from 'src/common/utils/base.dto'
 import { DelFlagEnum } from 'src/common/enums/common.enums'
@@ -30,6 +30,8 @@ class CommodityBaseDTO {
   publicationTime?: string
 
   @ApiProperty({ example: 1200000, description: '字数', required: false })
+  @IsOptional()
+  @Max(100000000)
   words?: number
 
   @ApiProperty({ example: '该作讲述了···', description: '介绍', required: false })
