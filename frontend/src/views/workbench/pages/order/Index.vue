@@ -36,7 +36,6 @@ const detailRef = ref()
 function showDetail(id: string) {
   detailVisiable.value = true
   nextTick(() => {
-    console.log(detailRef)
     detailRef.value.search(id)
   })
 }

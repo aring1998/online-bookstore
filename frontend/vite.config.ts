@@ -6,7 +6,7 @@ export default defineConfig({
   base: './',
   plugins: [vue()],
   server: {
-    port: 8081
+    port: 8088
   },
   resolve: {
     alias: {

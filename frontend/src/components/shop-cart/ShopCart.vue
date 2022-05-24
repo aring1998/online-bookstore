@@ -1,37 +1,50 @@
 <script setup lang="ts">
 import useStore from '@/store'
 import { ShoppingCart } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const useShopStore = useStore().shop
+const badge = ref('')
+watch(
+  useStore().shop().shopCartList,
+  () => {
+    badge.value = '新'
+  },
+  { deep: true }
+)
 </script>
 
 <template>
-  <div class="shop-cart" v-show="!route.path.includes('workbench')">
-    <el-popover placement="top" :width="300" trigger="hover">
-      <template #reference>
-        <el-icon><shopping-cart /></el-icon>
-      </template>
-      <div class="shop-list">
-        <div class="item" v-for="item of useShopStore().shopCartList" :key="item.id">
-          <div class="intro">
-            <img :src="item.imgUrl" alt="" width="40" height="40" />
-            <div>
-              <p>{{ item.name }}</p>
-              <p>￥{{ (item.price * item.num).toFixed(2) }}</p>
+  <div class="shop-cart" v-show="!route.path.includes('workbench')" @mouseover="badge = ''">
+    <el-badge :value="badge">
+      <el-popover placement="top" :width="300" trigger="hover">
+        <template #reference>
+          <el-icon><shopping-cart /></el-icon>
+        </template>
+        <div class="shop-list" v-show="useShopStore().shopCartList.length">
+          <div class="item" v-for="item of useShopStore().shopCartList" :key="item.id">
+            <div class="intro">
+              <img :src="item.imgUrl" alt="" width="40" height="40" />
+              <div>
+                <p>{{ item.name }}</p>
+                <p>￥{{ (item.price || 0 * item.num).toFixed(2) }}</p>
+              </div>
+            </div>
+            <div class="num">
+              <el-input-number v-model="item.num" :min="1" :max="99" :precision="0" size="small" @change="nextTick(() => (badge = ''))" />
             </div>
           </div>
-          <div class="num">
-            <el-input-number v-model="item.num" :min="1" :max="99" :precision="0" size="small" />
+          <div class="act-btn">
+            <el-button type="primary">下单</el-button>
           </div>
         </div>
-        <div class="act-btn">
-          <el-button type="primary">下单</el-button>
+        <div class="no-shop" v-show="!useShopStore().shopCartList.length">
+          <span>暂时没有商品哦，快去购买吧~</span>
         </div>
-      </div>
-    </el-popover>
+      </el-popover>
+    </el-badge>
   </div>
 </template>
 

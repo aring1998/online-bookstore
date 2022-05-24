@@ -19,6 +19,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/home/Index.vue')
   },
   {
+    path: '/commodity-detail/:id',
+    component: () => import('@/views/commodity-detail/Index.vue')
+  },
+  {
     path: '/workbench',
     component: () => import('@/views/workbench/Index.vue'),
     redirect: '/workbench/category',

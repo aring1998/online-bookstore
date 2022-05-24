@@ -6,6 +6,9 @@ import { HotSaleDTO, HotSaleRes } from './types/hot-sale'
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import useStore from '@/store'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const banner = reactive([
   {
@@ -69,7 +72,7 @@ onMounted(() => {
       <div class="book-list" v-loading="useStore().common().loading">
         <el-icon @click="prePage"><arrow-left-bold /></el-icon>
         <el-icon @click="nextPage"><arrow-right-bold /></el-icon>
-        <div class="item" v-for="item of hotSale" :key="item.id">
+        <div class="item" v-for="item of hotSale" :key="item.id" @click="router.push(`/commodity-detail/${item.id}`)">
           <img :src="item.imgUrl" alt="" width="200" height="200" />
           <span class="item-title">{{ item.name }}</span>
           <span class="item-price">￥{{ item.price }}</span>

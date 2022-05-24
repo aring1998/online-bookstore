@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import useStore from '@/store';
-import { ElMessage } from 'element-plus';
+import useStore from '@/store'
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import AccountModal from './components/AccountModal.vue'
+const route = useRoute()
 const accountShow = ref(false)
-const { user } = useStore()
+const { user, common } = useStore()
 function logout() {
   user().userInfo = null
   localStorage.removeItem('token')
@@ -20,19 +22,20 @@ function logout() {
       </div>
       <div class="right">
         <div v-show="!user().userInfo?.id">
-          <a @click="accountShow = true">登录</a>
+          <a @click="common().accountShow = true">登录</a>
         </div>
         <div v-show="user().userInfo?.id">
           <a>欢迎，{{ user().userInfo?.username }}</a>
           <span>|</span>
-          <router-link to="/workbench">进入后台</router-link>
+          <router-link to="/workbench" v-show="!route.path.includes('workbench')">进入后台</router-link>
+          <router-link to="/home" v-show="route.path.includes('workbench')">返回首页</router-link>
           <span>|</span>
           <a @click="logout">登出</a>
         </div>
       </div>
     </div>
   </div>
-  <AccountModal :visiable="accountShow" :before-close="() => accountShow = false" @show="accountShow = false"></AccountModal>
+  <AccountModal :visiable="common().accountShow" :before-close="() => (common().accountShow = false)" @show="common().accountShow = false"></AccountModal>
 </template>
 
 <style lang="scss" scoped>
