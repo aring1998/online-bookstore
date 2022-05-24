@@ -29,7 +29,7 @@ watch(
               <img :src="item.imgUrl" alt="" width="40" height="40" />
               <div>
                 <p>{{ item.name }}</p>
-                <p>￥{{ (item.price || 0 * item.num).toFixed(2) }}</p>
+                <p>￥{{ (item.price! * item.num).toFixed(2) }}</p>
               </div>
             </div>
             <div class="num">
