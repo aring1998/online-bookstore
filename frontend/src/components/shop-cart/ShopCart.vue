@@ -6,19 +6,19 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const useShopStore = useStore().shop
-const badge = ref('')
+const badgeHide = ref(true)
 watch(
   useStore().shop().shopCartList,
   () => {
-    badge.value = '新'
+    badgeHide.value = false
   },
   { deep: true }
 )
 </script>
 
 <template>
-  <div class="shop-cart" v-show="!route.path.includes('workbench')" @mouseover="badge = ''">
-    <el-badge :value="badge">
+  <div class="shop-cart" v-show="!route.path.includes('workbench')" @mouseover="badgeHide = true">
+    <el-badge value="新" :hidden="badgeHide">
       <el-popover placement="top" :width="300" trigger="hover">
         <template #reference>
           <el-icon><shopping-cart /></el-icon>
