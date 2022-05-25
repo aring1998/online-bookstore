@@ -83,7 +83,7 @@ export class OrderController {
   @Post('update')
   @ApiOperation({ summary: '修改订单状态' })
   @ApiResponse({ status: 0, type: OrderResDTO })
-  async update(@Headers('token') token: string, @Body() body: OrderUpdateDTO): Promise<OrderResDTO> {
+  async update(@Headers('token') token: string, @Body(ValidationPipe) body: OrderUpdateDTO): Promise<OrderResDTO> {
     if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const { id, orderType } = body
     const res = await this.orderService.findOne({ id })
@@ -110,5 +110,18 @@ export class OrderController {
       userId: userInfo.auth !== 1 ? userInfo.id : null
     })
     return suc(data, '')
+  }
+
+  @Post('cancel/:id')
+  @ApiOperation({ summary: '取消订单' })
+  @ApiResponse({ status: 0, type: OrderResDTO })
+  async cancel(@Headers('token') token: string, @Param('id') id: number): Promise<OrderResDTO> {
+    const userInfo = await this.userService.findOne({ token })
+    if (!userInfo) return fail('请先登录')
+    const res = await this.orderService.findOne({ id, userId: userInfo.id })
+    if (!res) return fail('未查询到数据')
+    if (res.orderType !== 0) return fail('无法取消已发货/完成的订单')
+    const data = await this.orderService.save(res)
+    return suc(data, '取消订单成功')
   }
 }

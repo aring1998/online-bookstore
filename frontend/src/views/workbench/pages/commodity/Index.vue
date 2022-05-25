@@ -40,7 +40,7 @@ const sechForm = reactive({
   name: '',
   categoryId: '',
   author: '',
-  date: undefined
+  date: []
 })
 const pagination = reactive({
   page: 1,
@@ -50,8 +50,8 @@ const pagination = reactive({
 async function search() {
   const { data } = await api.get<CommodityListApiParams, CommodityApiRes>('commodity/list', {
     ...sechForm,
-    publicationTimeStart: sechForm.date ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
-    publicationTimeEnd: sechForm.date ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
+    publicationTimeStart: sechForm.date.length ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
+    publicationTimeEnd: sechForm.date.length ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
     ...pagination
   })
   tableData.value = data.records
