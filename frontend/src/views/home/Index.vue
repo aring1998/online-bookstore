@@ -7,21 +7,22 @@ import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import useStore from '@/store'
 import { useRouter } from 'vue-router'
+import BookList from '@/components/book-list/BookList.vue'
 
 const router = useRouter()
 
 const banner = reactive([
   {
     id: 0,
-    src: 'http://img61.ddimg.cn/2022/3/31/2022033111265180774.jpg'
+    src: 'https://source.aring.cc/upload/2022033111265180774.jpg'
   },
   {
     id: 1,
-    src: 'http://img61.ddimg.cn/upload_img/00838/cxtc/750x315_0331-1648711003.jpg'
+    src: 'https://source.aring.cc/upload/750x315_0331-1648711003.jpg'
   },
   {
     id: 2,
-    src: 'http://img62.ddimg.cn/upload_img/00316/by/750-315-1648708335.jpg'
+    src: 'https://source.aring.cc/upload/750-315-1648708335.jpg'
   }
 ])
 
@@ -72,11 +73,7 @@ onMounted(() => {
       <div class="book-list" v-loading="useStore().common().loading">
         <el-icon @click="prePage"><arrow-left-bold /></el-icon>
         <el-icon @click="nextPage"><arrow-right-bold /></el-icon>
-        <div class="item" v-for="item of hotSale" :key="item.id" @click="router.push(`/commodity-detail/${item.id}`)">
-          <img :src="item.imgUrl" alt="" width="200" height="200" />
-          <span class="item-title">{{ item.name }}</span>
-          <span class="item-price">￥{{ item.price }}</span>
-        </div>
+        <BookList :bookList="hotSale"></BookList>
       </div>
     </div>
   </div>
@@ -109,30 +106,6 @@ onMounted(() => {
       }
       &:nth-child(2) {
         right: 0;
-      }
-    }
-    .item {
-      display: flex;
-      flex-flow: column nowrap;
-      cursor: pointer;
-      &:hover {
-        span {
-          text-decoration: underline;
-        }
-      }
-      span {
-        text-align: center;
-      }
-      img {
-        margin-bottom: 6px;
-      }
-      .item-title {
-        color: gray;
-        font-size: 14px;
-        margin-bottom: 4px;
-      }
-      .item-price {
-        color: red;
       }
     }
   }

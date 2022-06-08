@@ -27,7 +27,7 @@ function search() {
         <span class="divison">|</span>
       </div>
       <div class="category menu">
-        <h3>分类</h3>
+        <h3>立即下单</h3>
       </div>
     </div>
     <div class="search">

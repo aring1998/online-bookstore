@@ -26,7 +26,9 @@ watch(
         <div class="shop-list" v-show="useShopStore().shopCartList.length">
           <div class="item" v-for="item of useShopStore().shopCartList" :key="item.id">
             <div class="intro">
-              <img :src="item.imgUrl" alt="" width="40" height="40" />
+              <div class="img-wrap">
+                <img :src="item.imgUrl" alt="" height="40" />
+              </div>
               <div>
                 <p>{{ item.name }}</p>
                 <p>￥{{ (item.price! * item.num).toFixed(2) }}</p>
@@ -78,6 +80,13 @@ watch(
     .intro {
       display: flex;
       align-items: center;
+      .img-wrap {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 4px;
+      }
       p {
         margin: 4px 0;
       }

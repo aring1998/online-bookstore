@@ -19,6 +19,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/home/Index.vue')
   },
   {
+    path: '/commodity',
+    component: () => import('@/views/commodity/Index.vue'),
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
     path: '/commodity-detail/:id',
     component: () => import('@/views/commodity-detail/Index.vue')
   },

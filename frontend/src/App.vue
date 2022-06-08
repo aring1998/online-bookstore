@@ -7,6 +7,9 @@ import ShopCart from './components/shop-cart/ShopCart.vue'
 import FooterBar from './components/footer-bar/FooterBar.vue'
 import useStore from './store'
 import api from './utils/api'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 onMounted(async () => {
   try {
     if (!localStorage.getItem('token')) return
@@ -22,7 +25,12 @@ onMounted(async () => {
   <TopBar></TopBar>
   <FrontBar></FrontBar>
   <ShopCart></ShopCart>
-  <router-view></router-view>
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component v-if="route.meta && route.meta.keepAlive" :is="Component" />
+    </keep-alive>
+    <component v-if="!route?.meta?.keepAlive" :is="Component" />
+  </router-view>
   <FooterBar></FooterBar>
 </template>
 

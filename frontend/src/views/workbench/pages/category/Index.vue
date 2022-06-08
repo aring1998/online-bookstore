@@ -98,7 +98,7 @@ onMounted(() => {
         search()
       }"
   ></el-pagination>
-  <el-dialog v-model="visiable" :title="dialogName">
+  <el-dialog v-model="visiable" :title="dialogName" :z-index="2000">
     <div class="actForm-wrap">
       <el-form :model="actForm" :rules="formRules" label-width="70px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
         <el-form-item label="分类名" prop="name">

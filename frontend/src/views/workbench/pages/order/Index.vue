@@ -150,7 +150,7 @@ onMounted(async () => {
   <el-dialog v-model="detailVisiable" title="详情">
     <Detail ref="detailRef"></Detail>
   </el-dialog>
-  <el-dialog v-model="sendVisiable" title="修改发货状态" width="400px">
+  <el-dialog v-model="sendVisiable" title="修改发货状态" width="400px" :z-index="2000">
     <el-form :model="actForm" :rules="formRules" label-width="90px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
       <el-form-item label="id">
         <el-input v-model="actForm.id" disabled></el-input>

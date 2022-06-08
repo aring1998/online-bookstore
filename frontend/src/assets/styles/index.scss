@@ -19,6 +19,16 @@ a {
     color: #2B87D1;
   }
 }
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #c0c4cc;
+}
 button:focus {
   outline: 0;
 }

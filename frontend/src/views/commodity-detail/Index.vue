@@ -75,7 +75,7 @@ function addCommodity() {
         <span>其它信息</span>
       </div>
       <el-descriptions :column="3" border>
-        <el-descriptions-item>
+        <el-descriptions-item min-width="100px">
           <template #label>
             <div class="cell-item">
               <el-icon>

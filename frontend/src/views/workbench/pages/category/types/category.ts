@@ -1,8 +1,10 @@
-import { BasePageRes } from "@/utils/types"
+import { BasePageRes } from '@/utils/types'
 
 export interface CategoryDTO {
-  id?: number,
+  id?: number
   name?: string
+  page?: number
+  pageSize?: number
 }
 export interface CategoryAddApiParams {
   name: string
