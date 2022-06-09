@@ -26,7 +26,7 @@ onMounted(async () => {
   <FrontBar></FrontBar>
   <ShopCart></ShopCart>
   <router-view v-slot="{ Component }">
-    <keep-alive>
+    <keep-alive :key="route.path">
       <component v-if="route.meta && route.meta.keepAlive" :is="Component" />
     </keep-alive>
     <component v-if="!route?.meta?.keepAlive" :is="Component" />

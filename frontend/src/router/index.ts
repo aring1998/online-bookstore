@@ -30,6 +30,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/commodity-detail/Index.vue')
   },
   {
+    path: '/payment',
+    component: () => import('@/views/payment/Index.vue'),
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
     path: '/workbench',
     component: () => import('@/views/workbench/Index.vue'),
     redirect: '/workbench/category',

@@ -20,12 +20,10 @@ onBeforeMount(async () => {
 })
 
 const form = reactive({
-  address: '',
   num: 1
 })
 
 const formRules = reactive({
-  // address: [{ required: true, message: '请选择' }],
   num: [{ required: true, message: '请输入' }]
 })
 
@@ -38,7 +36,6 @@ function addCommodity() {
     }
     shop().shopCartList.push({
       ...commodityInfo.value,
-      address: form.address,
       num: form.num
     })
   })
@@ -58,9 +55,6 @@ function addCommodity() {
           <span>￥{{ commodityInfo.price }}</span>
         </div>
         <el-form :model="form" :rules="formRules" ref="formRef" :disabled="!user().userInfo?.id">
-          <el-form-item label="收货地址" prop="address">
-            <el-select v-model="form.address"></el-select>
-          </el-form-item>
           <el-form-item label="购买数量" prop="num">
             <el-input-number v-model="form.num" :min="1" :max="99"></el-input-number>
           </el-form-item>

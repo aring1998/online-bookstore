@@ -12,6 +12,7 @@ export interface CommodityDTO {
   introduce?: string
   imgUrl?: string
   categoryName?: string
+  num?: number
 }
 
 export interface CommodityApiRes extends BasePageRes {

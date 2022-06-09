@@ -17,7 +17,7 @@ watch(
 </script>
 
 <template>
-  <div class="shop-cart" v-show="!route.path.includes('workbench')" @mouseover="badgeHide = true">
+  <div class="shop-cart" v-show="!route.path.includes('workbench') && !route.path.includes('payment')" @mouseover="badgeHide = true">
     <el-badge value="新" :hidden="badgeHide">
       <el-popover placement="top" :width="300" trigger="hover">
         <template #reference>
