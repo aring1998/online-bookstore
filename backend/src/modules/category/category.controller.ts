@@ -26,7 +26,6 @@ export class CategoryController {
   @ApiOperation({ summary: '分类列表' })
   @ApiResponse({ status: 0, type: CategoryPageResDTO })
   async list(@Headers('token') token: string, @Query(ValidationPipe) query: CategoryListDTO): Promise<CategoryPageResDTO> {
-    if ((await this.userService.vaildAuth({ token })) !== 1) return fail('您没有权限')
     const payload = getPayload(query, ['name', 'page', 'pageSize'])
     const data = await this.categoryService.findByPage({
       ...payload,
