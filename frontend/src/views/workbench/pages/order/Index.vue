@@ -10,6 +10,7 @@ import areaData from '@/assets/json/china-area.json'
 import { getDictLabel, orderType } from '@/assets/js/dict'
 import useStore from '@/store'
 import moment from 'moment'
+import { getArrayLastElm } from '@/utils'
 
 const actFormRef = ref()
 const sendVisiable = ref(false)
@@ -57,7 +58,7 @@ async function search() {
     ...sechForm,
     publicationTimeStart: sechForm.date ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
     publicationTimeEnd: sechForm.date ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
-    receiveAddressCode: sechForm.receiveAddressCode?.length ? sechForm.receiveAddressCode[sechForm.receiveAddressCode.length - 1] : undefined,
+    receiveAddressCode: getArrayLastElm(sechForm.receiveAddressCode),
     ...pagination
   })
   tableData.value = data.records

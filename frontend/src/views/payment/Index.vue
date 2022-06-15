@@ -93,7 +93,13 @@ onMounted(() => {
       <p>合计：￥{{ selectionRows.reduce((pre, item) => pre += item.price! * item.num!, 0).toFixed(2) }}</p>
     </div>
     <div class="order">
-      <el-button type="primary" size="large" @click="visiable = true" :disabled="Boolean(useStore().shop().shopCartList)">选择发货地址并下单</el-button>
+      <el-button
+        type="primary"
+        size="large"
+        @click="visiable = true"
+        :disabled="!Boolean(useStore().shop().shopCartList.length) || !Boolean(useStore().user().userInfo?.id)"
+        >选择发货地址并下单</el-button
+      >
     </div>
     <el-dialog v-model="visiable" title="选择发货地址并下单">
       <div class="receiving-list">

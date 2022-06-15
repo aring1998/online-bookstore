@@ -5,10 +5,9 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AccountModal from './components/AccountModal.vue'
 const route = useRoute()
-const accountShow = ref(false)
 const { user, common } = useStore()
 function logout() {
-  user().userInfo = null
+  user().userInfo = {}
   localStorage.removeItem('token')
   ElMessage.success('退出成功')
 }
@@ -25,7 +24,7 @@ function logout() {
           <a @click="common().accountShow = true">登录</a>
         </div>
         <div v-show="user().userInfo?.id">
-          <a>欢迎，{{ user().userInfo?.username }}</a>
+          <router-link to="/profile">欢迎，{{ user().userInfo?.username }}</router-link>
           <span>|</span>
           <router-link to="/workbench" v-show="!route.path.includes('workbench')">进入后台</router-link>
           <router-link to="/home" v-show="route.path.includes('workbench')">返回首页</router-link>

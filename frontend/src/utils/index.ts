@@ -1,5 +1,5 @@
 // 节流
-export const debounce = (fn: Function, delay: number) => {
+export function debounce(fn: Function, delay: number) {
   let timer: any = null
   return function () {
     if (timer) {
@@ -7,4 +7,9 @@ export const debounce = (fn: Function, delay: number) => {
     }
     timer = setTimeout(fn, delay)
   }
+}
+
+export function getArrayLastElm<T>(array: Array<T>) {
+  if (!(array instanceof Array)) throw new Error('param must be Array')
+  return array[array.length - 1]
 }

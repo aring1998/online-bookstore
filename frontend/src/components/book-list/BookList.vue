@@ -33,9 +33,11 @@ const router = useRouter()
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
   }
   img {
     margin-bottom: 6px;
+    max-width: 200px;
   }
   .item-title {
     color: gray;

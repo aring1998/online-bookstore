@@ -1,6 +1,10 @@
 export interface LoginApiParams {
-  username: string,
+  username: string
   password: string
+}
+export interface UpdateAccountApiParams {
+  email?: string
+  profilePhotoUrl?: string
 }
 export interface AccountApiRes {
   auth: number
@@ -10,6 +14,6 @@ export interface AccountApiRes {
   profilePhotoUrl: string
   token: string
 }
-export interface RegisterApiParams extends LoginApiParams{
+export interface RegisterApiParams extends LoginApiParams {
   email?: string
 }

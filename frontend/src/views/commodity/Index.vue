@@ -109,7 +109,7 @@ onMounted(() => {
     display: flex;
     flex-flow: row wrap;
     min-height: 100px;
-    height: 500px;
+    height: 540px;
     overflow: auto;
     position: relative;
   }

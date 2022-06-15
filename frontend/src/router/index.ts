@@ -1,5 +1,3 @@
-import useStore from '@/store'
-import { ElMessage } from 'element-plus'
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
@@ -32,6 +30,13 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/payment',
     component: () => import('@/views/payment/Index.vue'),
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/profile',
+    component: () => import('@/views/profile/Index.vue'),
     meta: {
       keepAlive: true
     }
