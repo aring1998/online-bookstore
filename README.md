@@ -1,6 +1,7 @@
 # 📚 网上书店
 
 ## 🎈[在线演示(开发中)](https://online-bookstore.aring.cc)
+## 🎇[接口文档](https://www.apifox.cn/apidoc/project-1335597/api-30763302)
 
 ## 📖介绍
 网上书店是一个简易的训练项目，经典的后管+商城业务，查看业务脑图及页面概样请打开根目录下[.dev-docs](./.dev-docs/main.png) **(具体业务请以接口为准，或参考推荐项目)**
@@ -19,7 +20,7 @@ root
 
 ## 🧨注意事项
 1. git提交日志请务必遵守[commitlint.config](/commitlint.config.js)内约定
-2. 查看[接口文档](https://online-bookstore.aring.cc/swagger)
+2. 查看[Swagger接口文档](https://online-bookstore.aring.cc/swagger)
 
 ## ✨前端项目推荐
 ### Inbook
