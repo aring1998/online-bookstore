@@ -14,9 +14,11 @@ export class UploadService extends BaseSevice<UploadDTO> {
     super(UploadRepository)
   }
 
-  async findByDate(startDate: string, endDate: string) {
+  async findByDate(option: { userId: number; startDate: string; endDate: string }) {
+    const { userId, startDate, endDate } = option
     const res = await this.UploadRepository.createQueryBuilder('upload')
-      .where('created BETWEEN :startDate AND :endDate', {
+      .where({ userId })
+      .andWhere('created BETWEEN :startDate AND :endDate', {
         startDate,
         endDate
       })

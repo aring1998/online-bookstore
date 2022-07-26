@@ -30,7 +30,11 @@ export class AppController {
     if (!file) return fail('未接收到文件')
     if (file.size > 5120000) return fail('文件过大，请上传5MB以下的图片')
 
-    const fileList = await this.uploadService.findByDate(`${moment().format('YYYY-MM-DD')} 00:00:00`, `${moment().format('YYYY-MM-DD')} 23:59:59`)
+    const fileList = await this.uploadService.findByDate({
+      userId: userInfo.id,
+      startDate: moment().format('YYYY-MM-DD 00:00:00'),
+      endDate: moment().format('YYYY-MM-DD 23:59:59')
+    })
     if (fileList.total >= userInfo.uploadCount) return fail('该用户今日上传次数已达上限，如需独立上传空间请联系项目作者')
 
     const fileName = `${Date.now()}-${file.originalname}`
