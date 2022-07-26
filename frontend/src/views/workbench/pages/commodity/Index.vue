@@ -25,7 +25,11 @@ const actForm: Ref<CommodityDTO> = ref({
   imgUrl: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '请输入' }]
+  name: [{ required: true, message: '请输入' }],
+  categoryId: [{ required: true, message: '请选择' }],
+  author: [{ required: true, message: '请输入' }],
+  publicationTime: [{ required: true, message: '请输入' }],
+  imgUrl: [{ required: true, message: '请上传' }],
 })
 const tableData: Ref<CommodityDTO[]> = ref([])
 function showDialog(name: string, row?: CommodityDTO) {
@@ -80,7 +84,7 @@ function uploadSuccess(res: UploadApiRes) {
   if (res.code === 0) {
     ElMessage.success(res.message)
     actForm.value.imgUrl = res.data.fileUrl
-  }
+  } else ElMessage.error(res.message)
 }
 
 const categoryOptions: Ref<CategoryDTO[]> = ref([])
@@ -165,7 +169,7 @@ onMounted(async () => {
   ></el-pagination>
   <el-dialog v-model="visiable" :title="dialogName" :z-index="2000">
     <div class="actForm-wrap" v-loading="useStore().common().loading">
-      <el-form :model="actForm" :rules="formRules" label-width="70px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
+      <el-form :model="actForm" :rules="formRules" label-width="80px" ref="actFormRef" style="width: 100%" @submit.native.prevent>
         <el-form-item label="商品名" prop="name">
           <el-input v-model="actForm.name"></el-input>
         </el-form-item>

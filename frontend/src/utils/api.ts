@@ -30,7 +30,7 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
 // 响应拦截
 instance.interceptors.response.use((res: AxiosResponse) => {
   useStore().common().loading = false
-  if (res.status < 200 || res.status > 400) return ElMessage.error(`网络请求错误，错误：${res.statusText}`)
+  if (res.status < 200 || res.status >= 400) return ElMessage.error(`网络请求错误，错误：${res.statusText}`)
   if (res.data.code !== 0) ElMessage.error(res.data.message || '网络请求错误')
   else {
     if (res.data.message) ElMessage.success(res.data.message)
