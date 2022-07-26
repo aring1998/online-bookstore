@@ -23,6 +23,9 @@ export class UserDTO {
 
   @ApiProperty({ example: 'https://source.aring.cc/upload/1646726623796-图片名.png', description: '头像地址' })
   profilePhotoUrl?: string
+
+  @ApiProperty({ example: 30, description: '每日可上传次数' })
+  uploadCount?: number
 }
 
 export class UserWholeDTO extends UserDTO {

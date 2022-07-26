@@ -22,4 +22,7 @@ export class User extends BaseEntity {
 
   @Column({ default: 0 })
   auth: number
+
+  @Column({ default: 0 })
+  uploadCount: number
 }
