@@ -45,7 +45,7 @@ export class AppController {
       userId: userInfo.id,
       fileUrl,
       fileSize: file.size,
-      created: moment().format('YYYY-MM-DD hh:mm:ss')
+      created: moment().format('YYYY-MM-DD HH:mm:ss')
     })
     return suc(
       {
