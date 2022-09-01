@@ -1,11 +1,11 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Headers, Get } from '@nestjs/common'
+import { Controller, Post, UploadedFile, UseInterceptors, Headers, Get, Body } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { createWriteStream } from 'fs'
 import { join } from 'path'
 import { UserService } from 'src/modules/user/user.service'
 import { suc, fail } from 'src/common/utils/response'
-import { ApiResponse, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger'
-import { UploadResDTO } from './common/utils/app.dto'
+import { ApiResponse, ApiTags, ApiOperation, ApiConsumes } from '@nestjs/swagger'
+import { UploadParamDTO, UploadResDTO } from './common/utils/app.dto'
 import { UploadService } from './modules/upload/upload.service'
 import * as moment from 'moment'
 
@@ -22,9 +22,10 @@ export class AppController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: '上传文件' })
-  @ApiParam({ name: 'file', example: '(文件)', description: '文件' })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
   @ApiResponse({ status: 0, type: UploadResDTO })
-  async upload(@Headers('token') token: string, @UploadedFile() file: Express.Multer.File) {
+  async upload(@Headers('token') token: string, @UploadedFile() file: Express.Multer.File, @Body() _: UploadParamDTO) {
     const userInfo = await this.userService.findOne({ token })
     if (userInfo.auth !== 1) return fail('您没有权限')
     if (!file) return fail('未接收到文件')
@@ -37,7 +38,7 @@ export class AppController {
     })
     if (fileList.total >= userInfo.uploadCount) return fail('该用户今日上传次数已达上限，如需独立上传空间请联系项目作者')
 
-    const fileName = `${Date.now()}-${file.originalname}`
+    const fileName = `${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}-${file.originalname}`
     const writeFile = createWriteStream(join('/', 'home', 'aring', 'upload', fileName))
     writeFile.write(file.buffer)
     const fileUrl = `https://source.aring.cc/upload/${fileName}`

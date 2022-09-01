@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseResDTO } from 'src/common/utils/base.dto';
+import { BaseResDTO } from 'src/common/utils/base.dto'
 
 class UploadDTO {
   @ApiProperty({ example: '1646726623796-图片名.png', description: '文件名' })
@@ -15,4 +15,9 @@ class UploadDTO {
 export class UploadResDTO extends BaseResDTO {
   @ApiProperty({ type: UploadDTO, description: '文件信息' })
   data?: UploadDTO
+}
+
+export class UploadParamDTO {
+  @ApiProperty({ type: 'file', format: 'binary' })
+  file: Express.Multer.File
 }
