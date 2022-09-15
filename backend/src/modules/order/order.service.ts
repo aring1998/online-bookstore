@@ -21,7 +21,7 @@ export class OrderService extends BaseSevice<OrderDTO> {
       .leftJoin(User, 'user', 'order.userId = user.id')
       .where({ ...where })
     if (orderTimeStart && orderTimeEnd) {
-      sql = sql.andWhere('publicationTime BETWEEN :start AND :end', {
+      sql = sql.andWhere('orderTime BETWEEN :start AND :end', {
         start: orderTimeStart,
         end: orderTimeEnd
       })

@@ -56,8 +56,8 @@ const pagination = reactive({
 async function search() {
   const { data } = await api.get<any, OrderApiRes>('order/list', {
     ...sechForm,
-    publicationTimeStart: sechForm.date ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
-    publicationTimeEnd: sechForm.date ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
+    orderTimeStart: sechForm.date ? moment(sechForm.date[0]).format('YYYY-MM-DD') : undefined,
+    orderTimeEnd: sechForm.date ? moment(sechForm.date[1]).format('YYYY-MM-DD') : undefined,
     receiveAddressCode: getArrayLastElm(sechForm.receiveAddressCode),
     ...pagination
   })
@@ -101,7 +101,7 @@ onMounted(async () => {
     <el-form-item label="收货地区">
       <el-cascader placeholder="请选择地区" :options="areaData" v-model="sechForm.receiveAddressCode" clearable></el-cascader>
     </el-form-item>
-    <el-form-item label="出版日期">
+    <el-form-item label="下单日期">
       <el-date-picker v-model="sechForm.date" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" />
     </el-form-item>
     <el-form-item>

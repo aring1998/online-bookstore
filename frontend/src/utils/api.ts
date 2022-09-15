@@ -3,8 +3,8 @@ import useStore from '@/store'
 import { ElMessage } from 'element-plus'
 
 interface Res<T> {
-  code: number,
-  data: T,
+  code: number
+  data: T
   message: string
 }
 
@@ -19,38 +19,44 @@ const instance = axios.create({
 })
 
 // 请求拦截
-instance.interceptors.request.use((config: AxiosRequestConfig) => {
-  useStore().common().loading = true
-  config.headers && (config.headers.token = useStore().user().token)
-  return config
-}),
+instance.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    useStore().common().loading = true
+    config.headers && (config.headers.token = useStore().user().token)
+    return config
+  },
   (err: AxiosError) => {
     console.log(err)
   }
+)
 // 响应拦截
-instance.interceptors.response.use((res: AxiosResponse) => {
-  useStore().common().loading = false
-  if (res.status < 200 || res.status >= 400) return ElMessage.error(`网络请求错误，错误：${res.statusText}`)
-  if (res.data.code !== 0) ElMessage.error(res.data.message || '网络请求错误')
-  else {
-    if (res.data.message) ElMessage.success(res.data.message)
-  }
-  return res
-}),
+instance.interceptors.response.use(
+  (res: AxiosResponse) => {
+    useStore().common().loading = false
+    if (res.status < 200 || res.status >= 400) {
+      ElMessage.error(`网络请求错误，错误：${res.statusText}`)
+      throw new Error(res.statusText)
+    }
+    if (res.data.code !== 0) {
+      ElMessage.error(res.data.message || '网络请求错误')
+      throw new Error(res?.data?.message)
+    } else {
+      if (res.data.message) ElMessage.success(res.data.message)
+    }
+    return res
+  },
   (err: AxiosError) => {
     console.error(err)
   }
-
+)
 // 封装get/post方法
 const api = {
   async get<T, K>(url: string, params?: T): Promise<Res<K>> {
     const res = await instance.get<Res<K>>(url, { params })
-    if (res?.data?.code !== 0) throw new Error(res?.data?.message)
     return res.data
   },
   async post<T, K>(url: string, data?: T): Promise<Res<K>> {
     const res = await instance.post(url, data)
-    if (res?.data?.code !== 0) throw new Error(res?.data?.message)
     return res.data
   }
 }
